@@ -1,0 +1,60 @@
+{	
+	"settings_start" : {
+		"type" : "separator"
+	},
+	"configuration": {
+		"type": "header",
+		"description": "Configuration"
+	},
+	"update_every": {
+		"type": "spinbutton",
+		"default": 1.0,
+		"min": 0.0,
+		"max": 60.0,
+		"step": 0.1,
+		"units": "seconds",
+		"description": "Update every"
+	},
+	"configuration_end" : {
+		"type" : "separator"
+	},
+	"customization_start": {
+		"type": "header",
+		"description": "Customization"
+	},
+	"gui_type" : {
+	    "type": "combobox",
+	    "default" : 0,
+	    "description" : "Gui type",
+	    "options" : {
+	        "Compact" : 0,
+	        "Large" : 1
+	    },
+	    "tooltip" : "Applet Gui"
+ 	},
+	 "show_hover" : {
+	    "type" : "checkbox",
+	    "default" : true,
+	    "description": "Enable hover popup",
+	    "tooltip": "Show a hover popup with total bytes downloaded and uploaded"
+	 },
+	 "launch_terminal" : {
+	    "type" : "checkbox",
+	    "default" : true,
+	    "description": "List current Internet connections on click",
+	    "tooltip": "Open a terminal with list of current connections on a left mouse click. The next click closes the terminal."
+	 },
+	"list_connections_command": {
+		"type": "entry",
+		"default": "watch -n 1 lsof -i",
+		"description": "Command ",
+		"tooltip": "A command used to list current Internet connections"
+	},
+	"customization_end" : {
+		"type" : "separator"
+	},
+	"network_interface" : {
+	    "type": "generic",
+	    "default" : "eth0"
+	}
+}
