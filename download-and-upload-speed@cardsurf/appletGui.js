@@ -10,6 +10,7 @@ const Applet = imports.ui.applet;
 const uuid = 'download-and-upload-speed@cardsurf';
 const AppletDirectory = imports.ui.appletManager.applets[uuid];
 const AppletConstants = AppletDirectory.appletConstants;
+const CssStylization = AppletDirectory.cssStylization;
 
 
 
@@ -36,25 +37,35 @@ IconLabel.prototype = {
 		this.icon.set_icon_size(size);
     },
 
-    set_label_font_size: function(font_size) {
-		let css_style = "font-size: " + font_size + "px;";
+	set_label_style: function(css_style) {
 		this.label.set_style(css_style);
-    },
+	},
+
+	set_label_width: function(width) {
+		this.label.set_width(width);
+	},
+
+	set_label_text: function(text) {
+		this.label.set_text(text);
+	},
+
+	set_label_to_preferred_width: function() {
+		this.set_label_width(-1);
+	},
 
 	set_label_fixed_width: function(fixed_width_text) {
         Mainloop.timeout_add(1, Lang.bind(this, function() {
 			let text = this.label.get_text();
-			this.label.set_text(fixed_width_text);
+			this.set_label_to_preferred_width();
+			this.set_label_text(fixed_width_text);
 			let fixed_width = this.label.get_width();
-			this.label.set_width(fixed_width);
-			this.label.set_text(text);
+			this.set_label_width(fixed_width);
+			this.set_label_text(text);
         	return false;
         }));
-	}
+	},
 
 };
-
-
 
 
 
@@ -77,9 +88,10 @@ AppletGui.prototype = {
 		this.actor = new St.BoxLayout();
 		this.iconlabel_received = new IconLabel();
 		this.iconlabel_sent = new IconLabel();
+	    this.css_styler = new CssStylization.CssStringStyler();
 
 		this._init_actor();
-		this._init_iconlabels();
+		this._init_icons();
     },
 
 	_init_actor: function() {
@@ -90,21 +102,12 @@ AppletGui.prototype = {
 		this.actor.add(this.iconlabel_sent.actor);
 	},
 
-	_init_iconlabels: function() {
-		let icon_size = this.interface_type == AppletConstants.GuiType.COMPACT ?
-						(this.panel_height * 0.5) - 5 : (this.panel_height * 0.6) - 5;
-		let label_fixed_width_text = "99.9MB";
-
+	_init_icons: function() {
 		for(let [iconlabel, icon_name] of [ [this.iconlabel_received, "arrow_down.svg"], 
 											[this.iconlabel_sent, "arrow_up.svg"] ]){
-
 			let icon_file = this._load_icon_file(icon_name);
        	    iconlabel.set_gicon(icon_file);
-			iconlabel.set_icon_size(icon_size);
-			iconlabel.set_label_font_size(icon_size);
-		    iconlabel.set_label_fixed_width(label_fixed_width_text);
 		}
-
 	},
 
     _load_icon_file: function(icon_name) {
@@ -113,6 +116,70 @@ AppletGui.prototype = {
         let icon_file = Gio.file_new_for_path(icon_path);
         let icon_file = new Gio.FileIcon({ file: icon_file });
 		return icon_file;
+    },
+
+    set_text_style: function(css_style) {
+		css_style = this.add_font_size(css_style);
+		for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
+			iconlabel.set_label_style(css_style);
+		}
+		
+		this._resize_gui_elements_to_match_text(css_style);
+    },
+
+    add_font_size: function(css_style) {
+		let font_size = this.css_styler.get_numeric_value_or_null(css_style, "font-size");
+		if(font_size == null) {
+			css_style = this._calculate_font_size_and_add(css_style);
+		}
+		return css_style;
+    },
+
+    _calculate_font_size_and_add: function(css_style) {
+		let font_size = this._calculate_font_size();
+		let attributes = ["font-size: " + font_size + "px"];
+		css_style = this.css_styler.set_attributes(css_style, attributes);
+		return css_style;
+    },
+
+    _calculate_font_size: function() {
+		return this.interface_type == AppletConstants.GuiType.COMPACT ?
+			   (this.panel_height * 0.5) - 5 : (this.panel_height * 0.6) - 5;
+    },
+
+    _resize_gui_elements_to_match_text: function(css_style) {
+		this._set_icons_height_to_font_size(css_style);
+		this._set_labels_width_fixed_or_styled(css_style);
+    },
+
+    _set_icons_height_to_font_size: function(css_style) {
+		let font_size = this.css_styler.get_numeric_value_or_null(css_style, "font-size");
+		for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
+			iconlabel.set_icon_size(font_size);
+		}
+    },
+
+    _set_labels_width_fixed_or_styled: function(css_style) {
+		let width = this.css_styler.get_numeric_value_or_null(css_style, "width");
+		if(width == null) {
+			this._set_labels_fixed_width();
+		}
+		else {
+			this._set_labels_styled_width(width);
+		}
+    },
+
+    _set_labels_fixed_width: function() {
+		let label_fixed_width_text = "99.9MB";
+		for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
+			iconlabel.set_label_fixed_width(label_fixed_width_text);
+		}
+    },
+
+    _set_labels_styled_width: function(width) {
+		for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
+			iconlabel.set_label_width(width);
+		}
     },
 
     set_received_text: function(text) {
@@ -249,17 +316,31 @@ HoverMenuTotalBytes.prototype={
 	_init_labels: function(){
 		this.label_text_received.set_text("Total download:");
 		this.label_text_sent.set_text("Total upload:");
-
-		let css_style = "font-size: 15px; padding: 5px; font-weight: normal;";
-		this._set_style_widgets(css_style, [this.label_text_received, this.label_text_sent]);
-		css_style = "font-size: 15px; padding: 5px; font-weight: bold;";
-		this._set_style_widgets(css_style, [this.label_bytes_received, this.label_bytes_sent]);
 	},
 
-	_set_style_widgets: function(css_style, widgets){
+	set_text_style: function(css_style) {
+		this._set_widgets_style(css_style, [this.label_text_received, this.label_text_sent]);
+	},
+
+	set_numbers_style: function(css_style) {
+		this._set_widgets_style(css_style, [this.label_bytes_received, this.label_bytes_sent]);
+	},
+
+	_set_widgets_style: function(css_style, widgets){
+		css_style = this._append_semicolon(css_style);
 		for(let widget of widgets){
 			widget.set_style(css_style);
 		}
+	},
+
+	_append_semicolon: function(css_style){
+		css_style = css_style.trim();
+		last_char = css_style.slice(-1);
+		semicolon = ';';
+		if (last_char != semicolon) {
+			css_style += semicolon;
+		}
+		return css_style;
 	},
 
 	_init_actor: function(){

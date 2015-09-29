@@ -1,7 +1,7 @@
 {
 	"uuid": "download-and-upload-speed@cardsurf",
 	"name": "Download and upload speed",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Shows usage of a network interface"
 }
 
