@@ -27,10 +27,32 @@
 	"gui_type" : {
 		"type": "combobox",
 		"default" : 0,
-		"description" : "Gui type",
+		"description" : "Type",
 		"options" : {
 		    "Compact" : 0,
 		    "Large" : 1
+		},
+		"tooltip" : "Applet Gui"
+	},
+	"gui_received_icon_filename" : {
+		"type": "combobox",
+		"default" : "arrow_down_blue.svg",
+		"description" : "Download icon",
+		"options" : {
+		    "Blue" : "arrow_down_blue.svg",
+		    "Red" : "arrow_down_red.svg",
+		    "Green" : "arrow_down_green.svg"
+		},
+		"tooltip" : "Applet Gui"
+	},
+	"gui_sent_icon_filename" : {
+		"type": "combobox",
+		"default" : "arrow_up_red.svg",
+		"description" : "Upload icon",
+		"options" : {
+		    "Blue" : "arrow_up_blue.svg",
+		    "Red" : "arrow_up_red.svg",
+		    "Green" : "arrow_up_green.svg"
 		},
 		"tooltip" : "Applet Gui"
 	},
@@ -43,7 +65,6 @@
 	"gui_end" : {
 		"type" : "separator"
 	},
-
 
 	"hover_popup_start": {
 		"type": "header",
@@ -65,7 +86,7 @@
 		"type": "entry",
 		"default": "font-size: 15px; padding: 5px; font-weight: bold;",
 		"description": "Numbers CSS ",
-		"tooltip": "A CSS style that will be applied to a numbers in the hover popup"
+		"tooltip": "A CSS style that will be applied to numbers in the hover popup"
 	},
 	"hover_popup_end" : {
 		"type" : "separator"

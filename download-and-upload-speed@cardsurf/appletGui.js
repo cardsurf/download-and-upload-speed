@@ -103,11 +103,24 @@ AppletGui.prototype = {
 	},
 
 	_init_icons: function() {
-		for(let [iconlabel, icon_name] of [ [this.iconlabel_received, "arrow_down.svg"], 
-											[this.iconlabel_sent, "arrow_up.svg"] ]){
+		for(let [iconlabel, icon_name] of [ [this.iconlabel_received, "arrow_down_blue.svg"], 
+											[this.iconlabel_sent, "arrow_up_red.svg"] ]){
 			let icon_file = this._load_icon_file(icon_name);
        	    iconlabel.set_gicon(icon_file);
 		}
+	},
+
+	set_reveived_icon: function(icon_name) {
+		this._set_icon(this.iconlabel_received, icon_name);
+	},
+
+	set_sent_icon: function(icon_name) {
+		this._set_icon(this.iconlabel_sent, icon_name);
+	},
+
+	_set_icon: function(iconlabel, icon_name) {
+		let icon_file = this._load_icon_file(icon_name);
+   	    iconlabel.set_gicon(icon_file);
 	},
 
     _load_icon_file: function(icon_name) {

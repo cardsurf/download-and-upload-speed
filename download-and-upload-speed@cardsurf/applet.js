@@ -49,8 +49,11 @@ MyApplet.prototype = {
 		this.show_hover = true;
 		this.launch_terminal = true;
 		this.gui_text_css = "";
+		this.gui_received_icon_filename = "";
+		this.gui_sent_icon_filename = "";
 		this.hover_popup_text_css = "";
 		this.hover_popup_numbers_css = "";
+
 
 		this.applet_gui = null;
 		this.menu_item_network = null;
@@ -76,6 +79,8 @@ MyApplet.prototype = {
 						[Settings.BindingDirection.IN, "list_connections_command", this.on_list_connections_command_changed],
 						[Settings.BindingDirection.IN, "show_hover", this.on_show_hover_changed],
 						[Settings.BindingDirection.IN, "gui_text_css", this.on_gui_css_changed],
+						[Settings.BindingDirection.IN, "gui_received_icon_filename", this.on_gui_icon_changed],
+						[Settings.BindingDirection.IN, "gui_sent_icon_filename", this.on_gui_icon_changed],
 						[Settings.BindingDirection.IN, "hover_popup_text_css", this.on_hover_popup_css_changed],
 						[Settings.BindingDirection.IN, "hover_popup_numbers_css", this.on_hover_popup_css_changed],
                         [Settings.BindingDirection.BIDIRECTIONAL, "gui_type", this.on_interface_type_changed],
@@ -95,6 +100,14 @@ MyApplet.prototype = {
 		else {
 			this.hover_popup.disable();
 		}
+	},
+
+	on_gui_icon_changed: function () {
+		this.applet_gui.set_reveived_icon(this.gui_received_icon_filename);
+		this.applet_gui.set_sent_icon(this.gui_sent_icon_filename);
+		//this.applet_gui.set_icons(this.gui_download_icon_filename, this.gui_upload_icon_filename);
+		//this.applet_gui.set_icons(this.gui_text_css);
+		////this.applet_gui.set_text_style(this.gui_text_css);
 	},
 
 	on_gui_css_changed: function () {
@@ -228,6 +241,7 @@ MyApplet.prototype = {
 		this.applet_gui = new AppletGui.AppletGui(this.panel_height, this.gui_type);
 		this.actor.destroy_all_children();
 		this.actor.add(this.applet_gui.actor, { x_align: St.Align.MIDDLE, y_align: St.Align.MIDDLE, y_fill: false });
+		this.on_gui_icon_changed();
 		this.on_gui_css_changed();
 	},
 
