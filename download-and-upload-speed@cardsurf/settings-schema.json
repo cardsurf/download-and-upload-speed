@@ -34,33 +34,23 @@
 		},
 		"tooltip" : "Applet Gui"
 	},
-	"gui_received_icon_filename" : {
-		"type": "combobox",
-		"default" : "arrow_down_blue.svg",
-		"description" : "Download icon",
-		"options" : {
-		    "Blue" : "arrow_down_blue.svg",
-		    "Red" : "arrow_down_red.svg",
-		    "Green" : "arrow_down_green.svg"
-		},
-		"tooltip" : "Applet Gui"
-	},
-	"gui_sent_icon_filename" : {
-		"type": "combobox",
-		"default" : "arrow_up_red.svg",
-		"description" : "Upload icon",
-		"options" : {
-		    "Blue" : "arrow_up_blue.svg",
-		    "Red" : "arrow_up_red.svg",
-		    "Green" : "arrow_up_green.svg"
-		},
-		"tooltip" : "Applet Gui"
-	},
 	"gui_text_css": {
 		"type": "entry",
 		"default": "font-weight: bold;",
 		"description": "Text CSS ",
-		"tooltip": "A CSS style that will be applied to a text in the panel"
+		"tooltip": "A CSS style applied to a text in the panel"
+	},
+	"gui_received_icon_filename" : {
+		"type" : "filechooser",
+		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/arrow_down_blue.svg",
+		"description" : "Download icon",
+		"tooltip": "An icon displayed next to download speed in the panel"
+	},
+	"gui_sent_icon_filename" : {
+		"type" : "filechooser",
+		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/arrow_up_red.svg",
+		"description" : "Upload icon",
+		"tooltip": "An icon displayed next to upload speed in the panel"
 	},
 	"gui_end" : {
 		"type" : "separator"
@@ -80,13 +70,13 @@
 		"type": "entry",
 		"default": "font-size: 15px; padding: 5px; font-weight: normal;",
 		"description": "Text CSS ",
-		"tooltip": "A CSS style that will be applied to a description text in the hover popup"
+		"tooltip": "A CSS style applied to a description text in the hover popup"
 	},
 	"hover_popup_numbers_css": {
 		"type": "entry",
 		"default": "font-size: 15px; padding: 5px; font-weight: bold;",
 		"description": "Numbers CSS ",
-		"tooltip": "A CSS style that will be applied to numbers in the hover popup"
+		"tooltip": "A CSS style applied to numbers in the hover popup"
 	},
 	"hover_popup_end" : {
 		"type" : "separator"
@@ -100,7 +90,7 @@
 	 "launch_terminal" : {
 		"type" : "checkbox",
 		"default" : true,
-		"description": "List current Internet connections on click",
+		"description": "List current Internet connections on a click",
 		"tooltip": "Open a terminal with a list of current connections on a left mouse click. The next click closes the terminal."
 	 },
 	"list_connections_command": {

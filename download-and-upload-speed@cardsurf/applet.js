@@ -105,9 +105,6 @@ MyApplet.prototype = {
 	on_gui_icon_changed: function () {
 		this.applet_gui.set_reveived_icon(this.gui_received_icon_filename);
 		this.applet_gui.set_sent_icon(this.gui_sent_icon_filename);
-		//this.applet_gui.set_icons(this.gui_download_icon_filename, this.gui_upload_icon_filename);
-		//this.applet_gui.set_icons(this.gui_text_css);
-		////this.applet_gui.set_text_style(this.gui_text_css);
 	},
 
 	on_gui_css_changed: function () {
