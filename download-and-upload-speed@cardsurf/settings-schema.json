@@ -38,7 +38,7 @@
 		"type": "entry",
 		"default": "font-weight: bold;",
 		"description": "Text CSS ",
-		"tooltip": "A CSS style applied to a text in the panel"
+		"tooltip": "A CSS style applied to the text in the panel"
 	},
 	"gui_received_icon_filename" : {
 		"type" : "filechooser",
@@ -64,13 +64,13 @@
 		"type" : "checkbox",
 		"default" : true,
 		"description": "Enable hover popup",
-		"tooltip": "Show a hover popup with total bytes downloaded and uploaded"
+		"tooltip": "Show the hover popup with total bytes downloaded and uploaded"
 	 },
 	"hover_popup_text_css": {
 		"type": "entry",
 		"default": "font-size: 15px; padding: 5px; font-weight: normal;",
 		"description": "Text CSS ",
-		"tooltip": "A CSS style applied to a description text in the hover popup"
+		"tooltip": "A CSS style applied to the description text in the hover popup"
 	},
 	"hover_popup_numbers_css": {
 		"type": "entry",
