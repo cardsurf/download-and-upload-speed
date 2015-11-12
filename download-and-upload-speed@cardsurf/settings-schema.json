@@ -18,31 +18,80 @@
 	"configuration_end" : {
 		"type" : "separator"
 	},
-	"customization_start": {
+	"gui_start": {
 		"type": "header",
-		"description": "Customization"
+		"description": "Gui"
 	},
+
+
 	"gui_type" : {
-	    "type": "combobox",
-	    "default" : 0,
-	    "description" : "Gui type",
-	    "options" : {
-	        "Compact" : 0,
-	        "Large" : 1
-	    },
-	    "tooltip" : "Applet Gui"
- 	},
-	 "show_hover" : {
-	    "type" : "checkbox",
-	    "default" : true,
-	    "description": "Enable hover popup",
-	    "tooltip": "Show a hover popup with total bytes downloaded and uploaded"
+		"type": "combobox",
+		"default" : 0,
+		"description" : "Type",
+		"options" : {
+		    "Compact" : 0,
+		    "Large" : 1
+		},
+		"tooltip" : "Applet Gui"
+	},
+	"gui_text_css": {
+		"type": "entry",
+		"default": "font-weight: bold;",
+		"description": "Text CSS ",
+		"tooltip": "A CSS style applied to the text in the panel"
+	},
+	"gui_received_icon_filename" : {
+		"type" : "filechooser",
+		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/arrow_down_blue.svg",
+		"description" : "Download icon",
+		"tooltip": "An icon displayed next to download speed in the panel"
+	},
+	"gui_sent_icon_filename" : {
+		"type" : "filechooser",
+		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/arrow_up_red.svg",
+		"description" : "Upload icon",
+		"tooltip": "An icon displayed next to upload speed in the panel"
+	},
+	"gui_end" : {
+		"type" : "separator"
+	},
+
+	"hover_popup_start": {
+		"type": "header",
+		"description": "Hover popup"
+	},
+	"show_hover" : {
+		"type" : "checkbox",
+		"default" : true,
+		"description": "Enable hover popup",
+		"tooltip": "Show the hover popup with total bytes downloaded and uploaded"
 	 },
+	"hover_popup_text_css": {
+		"type": "entry",
+		"default": "font-size: 15px; padding: 5px; font-weight: normal;",
+		"description": "Text CSS ",
+		"tooltip": "A CSS style applied to the description text in the hover popup"
+	},
+	"hover_popup_numbers_css": {
+		"type": "entry",
+		"default": "font-size: 15px; padding: 5px; font-weight: bold;",
+		"description": "Numbers CSS ",
+		"tooltip": "A CSS style applied to numbers in the hover popup"
+	},
+	"hover_popup_end" : {
+		"type" : "separator"
+	},
+
+
+	"terminal_start": {
+		"type": "header",
+		"description": "Terminal"
+	},
 	 "launch_terminal" : {
-	    "type" : "checkbox",
-	    "default" : true,
-	    "description": "List current Internet connections on click",
-	    "tooltip": "Open a terminal with list of current connections on a left mouse click. The next click closes the terminal."
+		"type" : "checkbox",
+		"default" : true,
+		"description": "List current Internet connections on a click",
+		"tooltip": "Open a terminal with a list of current connections on a left mouse click. The next click closes the terminal."
 	 },
 	"list_connections_command": {
 		"type": "entry",
@@ -50,11 +99,13 @@
 		"description": "Command ",
 		"tooltip": "A command used to list current Internet connections"
 	},
-	"customization_end" : {
+	"terminal_end": {
 		"type" : "separator"
 	},
+
+
 	"network_interface" : {
-	    "type": "generic",
-	    "default" : "eth0"
+		"type": "generic",
+		"default" : "eth0"
 	}
 }
