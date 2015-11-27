@@ -42,6 +42,7 @@ MyApplet.prototype = {
 		this.filepath_bytes_sent = "";
 		this.list_connections_command = "";
 		this.list_connections_process = null;
+		this.data_limit_command_invoked = false;
 
 		this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id);
 		this.update_every = 1.0;
@@ -49,6 +50,9 @@ MyApplet.prototype = {
 		this.decimal_places = AppletConstants.DecimalPlaces.AUTO;
 		this.show_hover = true;
 		this.launch_terminal = true;
+		this.data_limit_command_enabled = false;
+		this.data_limit_command = "";
+		this.data_limit = 0;
 		this.gui_text_css = "";
 		this.gui_received_icon_filename = "";
 		this.gui_sent_icon_filename = "";
@@ -77,8 +81,11 @@ MyApplet.prototype = {
 		for(let [binding, property_name, callback] of [
 						[Settings.BindingDirection.IN, "update_every", null],
 						[Settings.BindingDirection.IN, "launch_terminal", null],
-                        [Settings.BindingDirection.IN, "decimal_places", this.on_decimal_places_changed],
+						[Settings.BindingDirection.IN, "data_limit_command", null],
 						[Settings.BindingDirection.IN, "list_connections_command", this.on_list_connections_command_changed],
+						[Settings.BindingDirection.IN, "data_limit", this.on_data_limit_changed],
+						[Settings.BindingDirection.IN, "data_limit_command_enabled", this.on_data_limit_changed],
+						[Settings.BindingDirection.IN, "decimal_places", this.on_decimal_places_changed],
 						[Settings.BindingDirection.IN, "show_hover", this.on_show_hover_changed],
 						[Settings.BindingDirection.IN, "gui_text_css", this.on_gui_css_changed],
 						[Settings.BindingDirection.IN, "gui_received_icon_filename", this.on_gui_icon_changed],
@@ -91,12 +98,22 @@ MyApplet.prototype = {
 		}
 	},
 
-	on_decimal_places_changed: function () {
-		this.applet_gui.set_decimal_places(this.decimal_places);
-	},
-
 	on_list_connections_command_changed: function () {
 		this.list_connections_process.bash_command = this.list_connections_command;
+	},
+
+	on_data_limit_changed: function () {
+		this.data_limit_command_invoked = this.data_limit_exceeded() ? true : false;
+	},
+
+	data_limit_exceeded: function () {
+		let bytes_total = this.bytes_received_total + this.bytes_sent_total;
+		let bytes_data_limit = this.data_limit * 1000000;
+		return bytes_total > bytes_data_limit;
+    },
+
+	on_decimal_places_changed: function () {
+		this.applet_gui.set_decimal_places(this.decimal_places);
 	},
 
 	on_show_hover_changed: function () {
@@ -264,6 +281,7 @@ MyApplet.prototype = {
 		this.applet_gui.set_received_text(received);
 		this.applet_gui.set_sent_text(sent);
 		this.hover_popup.set_text(received_total, sent_total);
+		this.invoke_data_limit_command_if_exceeded();
 
 		Mainloop.timeout_add(this.update_every * 1000, Lang.bind(this, this.run));
     },
@@ -347,6 +365,19 @@ MyApplet.prototype = {
 		this.bytes_sent_iteration = this.calculate_bytes_difference(bytes_sent, this.bytes_sent_previous);
 		this.bytes_sent_previous = bytes_sent;
 		this.bytes_sent_total += this.bytes_sent_iteration;
+    },
+
+	invoke_data_limit_command_if_exceeded: function () {
+		if(!this.data_limit_command_invoked && this.data_limit_command_enabled && this.data_limit_exceeded()) {
+			this.invoke_data_limit_command();
+			this.data_limit_command_invoked = true;
+		}
+    },
+
+	invoke_data_limit_command: function () {
+		let terminal_process = new ShellUtils.TerminalProcess(this.data_limit_command);
+		terminal_process.maximized = true;
+		terminal_process.spawn_async();
     },
 
 };

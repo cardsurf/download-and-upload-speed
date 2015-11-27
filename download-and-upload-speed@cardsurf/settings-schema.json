@@ -103,7 +103,7 @@
 	 "launch_terminal" : {
 		"type" : "checkbox",
 		"default" : true,
-		"description": "List current Internet connections on a click",
+		"description": "List current Internet connections on click",
 		"tooltip": "Open a terminal with a list of current connections on a left mouse click. The next click closes the terminal."
 	 },
 	"list_connections_command": {
@@ -116,6 +116,35 @@
 		"type" : "separator"
 	},
 
+	"data_limit_start": {
+		"type": "header",
+		"description": "Data Limits"
+	},
+	"data_limit": {
+		"type": "spinbutton",
+		"default": 100.0,
+		"min": 0.0,
+		"max": 100000.0,
+		"step": 0.1,
+		"units": "MB",
+		"description": "Threshold",
+		"tooltip": "The maximum amount of data to download and upload"
+	},
+	"data_limit_command_enabled" : {
+		"type" : "checkbox",
+		"default" : false,
+		"description": "Invoke command when data limit exceeded",
+		"tooltip": "Invokes a command when amount of data downloaded and uploaded exceeded the threshold"
+	 },
+	"data_limit_command": {
+		"type": "entry",
+		"default": "echo \"Data limit exceeded\"; echo \"This terminal will close in 5 seconds\"; sleep 5; exit 0",
+		"description": "Command",
+		"tooltip": "A command to invoke"
+	},
+	"terminal_end": {
+		"type" : "separator"
+	},
 
 	"network_interface" : {
 		"type": "generic",
