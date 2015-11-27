@@ -98,6 +98,25 @@ TerminalProcess.prototype = {
 		this.maximized = false;
     },
 
+    get bash_command() {
+        return this._bash_command;
+    },
+
+    set bash_command(command) {
+		command = this._add_semicolon_end(command);
+        this._bash_command = command;
+    },
+
+    _add_semicolon_end: function(command) {
+		command = command.trim();
+		let last_char = command.slice(-1);
+		let semicolon = ";";
+		if(last_char != semicolon) {
+			command = command + semicolon;
+		}
+		return command;
+    },
+
     spawn_async: function() {
 		this.spawn_async_calls++;
 		if(this.spawn_async_calls == 1 && !this.spawned_async) {
@@ -131,8 +150,8 @@ TerminalProcess.prototype = {
     get_full_bash_command: function() {
 		let start_bash = "bash -c \"";
 		let write_terminal_pid = "echo $$ > " + this.tmp_filepath + ";" 
-		let exec_user_command = this.bash_command;
-		let keep_terminal_opened = ";exec bash\"";
+		let exec_user_command = this._bash_command;
+		let keep_terminal_opened = "exec bash\"";
 		return start_bash + write_terminal_pid + exec_user_command + keep_terminal_opened;
     },
 
