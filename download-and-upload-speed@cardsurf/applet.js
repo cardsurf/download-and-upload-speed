@@ -46,6 +46,7 @@ MyApplet.prototype = {
 		this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id);
 		this.update_every = 1.0;
 		this.gui_type = 0;
+		this.decimal_places = AppletConstants.DecimalPlaces.AUTO;
 		this.show_hover = true;
 		this.launch_terminal = true;
 		this.gui_text_css = "";
@@ -76,6 +77,7 @@ MyApplet.prototype = {
 		for(let [binding, property_name, callback] of [
 						[Settings.BindingDirection.IN, "update_every", null],
 						[Settings.BindingDirection.IN, "launch_terminal", null],
+                        [Settings.BindingDirection.IN, "decimal_places", this.on_decimal_places_changed],
 						[Settings.BindingDirection.IN, "list_connections_command", this.on_list_connections_command_changed],
 						[Settings.BindingDirection.IN, "show_hover", this.on_show_hover_changed],
 						[Settings.BindingDirection.IN, "gui_text_css", this.on_gui_css_changed],
@@ -87,6 +89,10 @@ MyApplet.prototype = {
 						[Settings.BindingDirection.BIDIRECTIONAL, "network_interface", null] ]){
 			    this.settings.bindProperty(binding, property_name, property_name, callback, null);
 		}
+	},
+
+	on_decimal_places_changed: function () {
+		this.applet_gui.set_decimal_places(this.decimal_places);
 	},
 
 	on_list_connections_command_changed: function () {
@@ -235,7 +241,7 @@ MyApplet.prototype = {
 	},
 
 	_init_gui: function () {
-		this.applet_gui = new AppletGui.AppletGui(this.panel_height, this.gui_type);
+		this.applet_gui = new AppletGui.AppletGui(this.panel_height, this.gui_type, this.decimal_places);
 		this.actor.destroy_all_children();
 		this.actor.add(this.applet_gui.actor, { x_align: St.Align.MIDDLE, y_align: St.Align.MIDDLE, y_fill: false });
 		this.on_gui_icon_changed();
@@ -315,6 +321,12 @@ MyApplet.prototype = {
     },
 
 	round_output_number: function (number) {
+		let output_number = this.decimal_places == AppletConstants.DecimalPlaces.AUTO ?
+							this.round_output_number_auto(number) : number.toFixed(this.decimal_places);
+		return output_number;
+    },
+
+	round_output_number_auto: function (number) {
 		if(number > 100) {
 			return number.toFixed(0);
 		}

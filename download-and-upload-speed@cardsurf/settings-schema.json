@@ -34,6 +34,19 @@
 		},
 		"tooltip" : "Applet Gui"
 	},
+	"decimal_places" : {
+		"type": "combobox",
+		"default" : -1,
+		"description" : "Decimal places",
+		"options" : {
+		    "Auto" : -1,
+		    "0 " : 0,
+			"1 " : 1,
+			"2 " : 2,
+			"3 " : 3 
+		},
+		"tooltip" : "Decimal places of download and upload speed shown in the panel"
+	},
 	"gui_text_css": {
 		"type": "entry",
 		"default": "font-weight: bold;",

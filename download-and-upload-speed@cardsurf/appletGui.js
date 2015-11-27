@@ -74,16 +74,17 @@ IconLabel.prototype = {
 
 
 
-function AppletGui(panel_height, interface_type) {
-	this._init(panel_height, interface_type);
+function AppletGui(panel_height, interface_type, decimal_places) {
+	this._init(panel_height, interface_type, decimal_places);
 };
 
 AppletGui.prototype = {
 
-    _init: function(panel_height, interface_type) {
+    _init: function(panel_height, interface_type, decimal_places) {
 
 		this.panel_height = panel_height;
 		this.interface_type = interface_type;
+		this.decimal_places = decimal_places;
 
 		this.actor = new St.BoxLayout();
 		this.iconlabel_received = new IconLabel();
@@ -179,10 +180,27 @@ AppletGui.prototype = {
     },
 
     _set_labels_fixed_width: function() {
-		let label_fixed_width_text = "99.9MB";
+		let fixed_width_text = this._get_fixed_width_text();
 		for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
-			iconlabel.set_label_fixed_width(label_fixed_width_text);
+			iconlabel.set_label_fixed_width(fixed_width_text);
 		}
+    },
+
+    _get_fixed_width_text: function() {
+		let text = "";
+		if(this.decimal_places == AppletConstants.DecimalPlaces.AUTO) {
+			text = "99.9MB";
+		}
+		else {
+			text = "999." + this.repeat_string("9", this.decimal_places) + "MB";
+		} 
+		return text;
+    },
+
+    repeat_string: function(str, repetitions) {
+		let array = Array(repetitions + 1);
+		let output_string = array.join(str);
+		return output_string;
     },
 
     _set_labels_styled_width: function(width) {
@@ -199,7 +217,12 @@ AppletGui.prototype = {
     set_sent_text: function(text) {
 		let label = this.iconlabel_sent.label;
 		label.set_text(text);
-    }
+    },
+
+    set_decimal_places: function(decimal_places) {
+		this.decimal_places = decimal_places;
+		this._set_labels_fixed_width();
+    },
 
 };
 
