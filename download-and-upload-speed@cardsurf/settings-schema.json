@@ -24,7 +24,7 @@
 	},
 
 
-	"gui_type" : {
+	"gui_speed_type" : {
 		"type": "combobox",
 		"default" : 0,
 		"description" : "Type",
@@ -103,7 +103,7 @@
 	 "launch_terminal" : {
 		"type" : "checkbox",
 		"default" : true,
-		"description": "List current Internet connections on click",
+		"description": "List current Internet connections on mouse click",
 		"tooltip": "Open a terminal with a list of current connections on a left mouse click. The next click closes the terminal."
 	 },
 	"list_connections_command": {
@@ -122,28 +122,36 @@
 	},
 	"data_limit": {
 		"type": "spinbutton",
-		"default": 100.0,
+		"default": 0.0,
 		"min": 0.0,
 		"max": 100000.0,
 		"step": 0.1,
 		"units": "MB",
-		"description": "Threshold",
-		"tooltip": "The maximum amount of data to download and upload"
+		"description": "Data limit",
+		"tooltip": "The maxium amount of data to download and upload. 0 means no limits"
 	},
+	"gui_data_limit_type" : {
+		"type": "combobox",
+		"default" : 0,
+		"description" : "Show data limit usage",
+		"options" : {
+		    "None" : 0,
+		    "Circle" : 1,
+		    "Text" : 2
+		},
+		"tooltip" : "Show the percentage of data limit used in the panel"
+	 },
 	"data_limit_command_enabled" : {
 		"type" : "checkbox",
 		"default" : false,
 		"description": "Invoke command when data limit exceeded",
-		"tooltip": "Invokes a command when amount of data downloaded and uploaded exceeded the threshold"
+		"tooltip": "Invoke a command when amount of data downloaded and uploaded exceeded the limit"
 	 },
 	"data_limit_command": {
 		"type": "entry",
-		"default": "echo \"Data limit exceeded\"; echo \"This terminal will close in 5 seconds\"; sleep 5; exit 0",
+		"default": "echo \"Data limit exceeded. This terminal will close in 5 seconds.\"; sleep 5; exit 0;",
 		"description": "Command",
 		"tooltip": "A command to invoke"
-	},
-	"terminal_end": {
-		"type" : "separator"
 	},
 
 	"network_interface" : {

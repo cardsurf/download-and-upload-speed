@@ -34,6 +34,7 @@ MyApplet.prototype = {
 		this.bytes_sent_previous = 0;
 		this.bytes_sent_iteration = 0;
 		this.bytes_sent_total = 0;
+		this.bytes_total = 0;
 
 		this.network_directory = "/sys/class/net/";
 		this.network_interfaces = [];
@@ -46,7 +47,8 @@ MyApplet.prototype = {
 
 		this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id);
 		this.update_every = 1.0;
-		this.gui_type = 0;
+		this.gui_speed_type = 0;
+		this.gui_data_limit_type = 0;
 		this.decimal_places = AppletConstants.DecimalPlaces.AUTO;
 		this.show_hover = true;
 		this.launch_terminal = true;
@@ -59,8 +61,8 @@ MyApplet.prototype = {
 		this.hover_popup_text_css = "";
 		this.hover_popup_numbers_css = "";
 
-
-		this.applet_gui = null;
+		this.gui_speed = null;
+		this.gui_data_limit = null;
 		this.menu_item_network = null;
 		this.menu_item_gui = null;
 		this.hover_popup = null;
@@ -87,12 +89,13 @@ MyApplet.prototype = {
 						[Settings.BindingDirection.IN, "data_limit_command_enabled", this.on_data_limit_changed],
 						[Settings.BindingDirection.IN, "decimal_places", this.on_decimal_places_changed],
 						[Settings.BindingDirection.IN, "show_hover", this.on_show_hover_changed],
+						[Settings.BindingDirection.IN, "gui_data_limit_type", this.on_gui_data_limit_type_changed],
 						[Settings.BindingDirection.IN, "gui_text_css", this.on_gui_css_changed],
 						[Settings.BindingDirection.IN, "gui_received_icon_filename", this.on_gui_icon_changed],
 						[Settings.BindingDirection.IN, "gui_sent_icon_filename", this.on_gui_icon_changed],
 						[Settings.BindingDirection.IN, "hover_popup_text_css", this.on_hover_popup_css_changed],
 						[Settings.BindingDirection.IN, "hover_popup_numbers_css", this.on_hover_popup_css_changed],
-                        [Settings.BindingDirection.BIDIRECTIONAL, "gui_type", this.on_interface_type_changed],
+                        [Settings.BindingDirection.BIDIRECTIONAL, "gui_speed_type", this.on_gui_speed_type_changed],
 						[Settings.BindingDirection.BIDIRECTIONAL, "network_interface", null] ]){
 			    this.settings.bindProperty(binding, property_name, property_name, callback, null);
 		}
@@ -107,13 +110,20 @@ MyApplet.prototype = {
 	},
 
 	data_limit_exceeded: function () {
-		let bytes_total = this.bytes_received_total + this.bytes_sent_total;
-		let bytes_data_limit = this.data_limit * 1000000;
-		return bytes_total > bytes_data_limit;
+		let data_limit_bytes = this.convert_data_limit_bytes();
+		return this.bytes_total > data_limit_bytes;
     },
 
+	convert_data_limit_bytes: function () {
+		return this.data_limit * 1000000;
+    },
+
+	on_gui_data_limit_type_changed: function () {
+		this.gui_data_limit.set_gui(this.gui_data_limit_type);
+	},
+
 	on_decimal_places_changed: function () {
-		this.applet_gui.set_decimal_places(this.decimal_places);
+		this.gui_speed.set_decimal_places(this.decimal_places);
 	},
 
 	on_show_hover_changed: function () {
@@ -126,12 +136,12 @@ MyApplet.prototype = {
 	},
 
 	on_gui_icon_changed: function () {
-		this.applet_gui.set_reveived_icon(this.gui_received_icon_filename);
-		this.applet_gui.set_sent_icon(this.gui_sent_icon_filename);
+		this.gui_speed.set_reveived_icon(this.gui_received_icon_filename);
+		this.gui_speed.set_sent_icon(this.gui_sent_icon_filename);
 	},
 
 	on_gui_css_changed: function () {
-		this.applet_gui.set_text_style(this.gui_text_css);
+		this.gui_speed.set_text_style(this.gui_text_css);
 	},
 
 	on_hover_popup_css_changed: function () {
@@ -139,8 +149,8 @@ MyApplet.prototype = {
 		this.hover_popup.set_numbers_style(this.hover_popup_numbers_css);
 	},
 
-	on_interface_type_changed: function () {
-		this.menu_item_gui.set_active_option(this.gui_type);
+	on_gui_speed_type_changed: function () {
+		this.menu_item_gui.set_active_option(this.gui_speed_type);
 		this._init_gui();
 	},
 
@@ -226,16 +236,16 @@ MyApplet.prototype = {
 
 	_init_menu_item_gui: function () {
 		this.menu_item_gui = new AppletGui.RadioMenuItem("Gui", ["Compact", "Large"]);
-		this.menu_item_gui.set_active_option(this.gui_type);
+		this.menu_item_gui.set_active_option(this.gui_speed_type);
 		this.menu_item_gui.set_callback_option_clicked(this, this.on_menu_item_gui_clicked);
 		this._applet_context_menu.addMenuItem(this.menu_item_gui);
 		this._applet_context_menu.connect('open-state-changed', Lang.bind(this, this.on_context_menu_state_changed));
 	},
 
 	on_menu_item_gui_clicked: function (option_name, option_index) {
-		if(this.gui_type != option_index) {
-            this.gui_type = option_index;
-			this.on_interface_type_changed();
+		if(this.gui_speed_type != option_index) {
+            this.gui_speed_type = option_index;
+			this.on_gui_speed_type_changed();
 		}
 	},
 
@@ -258,11 +268,21 @@ MyApplet.prototype = {
 	},
 
 	_init_gui: function () {
-		this.applet_gui = new AppletGui.AppletGui(this.panel_height, this.gui_type, this.decimal_places);
+		this.gui_speed = new AppletGui.GuiSpeed(this.panel_height, this.gui_speed_type, this.decimal_places);
+		this.gui_data_limit = new AppletGui.GuiDataLimit(this.panel_height, this.gui_data_limit_type);
 		this.actor.destroy_all_children();
-		this.actor.add(this.applet_gui.actor, { x_align: St.Align.MIDDLE, y_align: St.Align.MIDDLE, y_fill: false });
+		this._add_gui_speed();
+		this._add_gui_data_limit();
+	},
+
+	_add_gui_speed: function () {
+		this.actor.add(this.gui_speed.actor, { x_align: St.Align.MIDDLE, y_align: St.Align.MIDDLE, y_fill: false });
 		this.on_gui_icon_changed();
 		this.on_gui_css_changed();
+	},
+
+	_add_gui_data_limit: function () {
+		this.actor.add(this.gui_data_limit.actor, { x_align: St.Align.MIDDLE, y_align: St.Align.MIDDLE, y_fill: false });
 	},
 
 
@@ -272,14 +292,16 @@ MyApplet.prototype = {
     run: function () {
 		this.update_bytes_received();
 		this.update_bytes_sent();
+		this.update_bytes_total();
 
 		let received = this.convert_bytes_to_readable_unit(this.bytes_received_iteration);
 		let sent = this.convert_bytes_to_readable_unit(this.bytes_sent_iteration);
 		let received_total = this.convert_two_decimals(this.bytes_received_total);
 		let sent_total = this.convert_two_decimals(this.bytes_sent_total);
 
-		this.applet_gui.set_received_text(received);
-		this.applet_gui.set_sent_text(sent);
+		this.gui_speed.set_received_text(received);
+		this.gui_speed.set_sent_text(sent);
+		this.update_gui_data_limit();
 		this.hover_popup.set_text(received_total, sent_total);
 		this.invoke_data_limit_command_if_exceeded();
 
@@ -366,6 +388,25 @@ MyApplet.prototype = {
 		this.bytes_sent_previous = bytes_sent;
 		this.bytes_sent_total += this.bytes_sent_iteration;
     },
+
+	update_bytes_total: function () {
+		this.bytes_total = this.bytes_received_total + this.bytes_sent_total;
+    },
+
+	update_gui_data_limit: function () {
+		let percentage = this.is_zero(this.data_limit) ? 0 : this.bytes_total / this.convert_data_limit_bytes();
+		percentage = percentage * 100;
+		this.gui_data_limit.set_percentage(percentage);
+	},
+
+	is_zero: function (number) {
+		let decimals = 15;
+        let precision = decimals - 1;
+		let rounded = number.toFixed(precision);
+		let zero = 0.0;
+		let zero = zero.toFixed(precision);
+		return rounded == zero;
+	},
 
 	invoke_data_limit_command_if_exceeded: function () {
 		if(!this.data_limit_command_invoked && this.data_limit_command_enabled && this.data_limit_exceeded()) {

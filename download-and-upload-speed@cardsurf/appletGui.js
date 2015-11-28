@@ -13,7 +13,7 @@ const AppletConstants = AppletDirectory.appletConstants;
 const CssStylization = AppletDirectory.cssStylization;
 
 
-
+const Cairo = imports.cairo;
 
 function IconLabel() {
 	this._init();
@@ -74,16 +74,16 @@ IconLabel.prototype = {
 
 
 
-function AppletGui(panel_height, interface_type, decimal_places) {
-	this._init(panel_height, interface_type, decimal_places);
+function GuiSpeed(panel_height, gui_speed_type, decimal_places) {
+	this._init(panel_height, gui_speed_type, decimal_places);
 };
 
-AppletGui.prototype = {
+GuiSpeed.prototype = {
 
-    _init: function(panel_height, interface_type, decimal_places) {
+    _init: function(panel_height, gui_speed_type, decimal_places) {
 
 		this.panel_height = panel_height;
-		this.interface_type = interface_type;
+		this.gui_speed_type = gui_speed_type;
 		this.decimal_places = decimal_places;
 
 		this.actor = new St.BoxLayout();
@@ -95,7 +95,7 @@ AppletGui.prototype = {
     },
 
 	_init_actor: function() {
-		if(this.interface_type == AppletConstants.GuiType.COMPACT) {
+		if(this.gui_speed_type == AppletConstants.GuiSpeedType.COMPACT) {
 			this.actor.set_vertical(true);
 		}
 		this.actor.add(this.iconlabel_received.actor);
@@ -153,7 +153,7 @@ AppletGui.prototype = {
     },
 
     _calculate_font_size: function() {
-		return this.interface_type == AppletConstants.GuiType.COMPACT ?
+		return this.gui_speed_type == AppletConstants.GuiSpeedType.COMPACT ?
 			   (this.panel_height * 0.5) - 5 : (this.panel_height * 0.6) - 5;
     },
 
@@ -447,5 +447,190 @@ HoverMenuTotalBytes.prototype={
 	},
 
 }
+
+
+
+
+
+
+
+
+
+function GuiDataLimit(panel_height, gui_data_limit_type) {
+	this._init(panel_height, gui_data_limit_type);
+};
+
+GuiDataLimit.prototype = {
+
+    _init: function(panel_height, gui_data_limit_type) {
+
+		this.panel_height = panel_height;
+		this.gui_data_limit_type = gui_data_limit_type;
+
+		this.actor = new St.BoxLayout();
+		this.percentage_actor = null;
+		
+		this._set_percentage_actor();
+    },
+
+	set_percentage: function(percentage) {
+		if(this.gui_data_limit_type != AppletConstants.GuiDataLimitType.NONE) {
+			this.percentage_actor.set_percentage(percentage);
+		}
+	},
+
+	set_gui: function(gui_data_limit_type) {
+		this.gui_data_limit_type = gui_data_limit_type;
+		this._set_percentage_actor();
+	},
+
+	_set_percentage_actor: function() {
+		this.actor.destroy_all_children();
+		switch (this.gui_data_limit_type) {
+			case AppletConstants.GuiDataLimitType.NONE:
+				this._set_percentage_actor_none();
+				break;
+			case AppletConstants.GuiDataLimitType.CIRCLE:
+				this._set_percentage_actor_circle();
+				break;
+			case AppletConstants.GuiDataLimitType.TEXT:
+				this._set_percentage_actor_text();
+				break;
+		}
+	},
+
+	_set_percentage_actor_none: function() {
+		this.percentage_actor = null;
+		this.hide();
+	},
+
+	_set_percentage_actor_circle: function() {
+		this.percentage_actor = new PercentageCircle(this.panel_height);
+		this._add_percentage_actor();
+	},
+
+	_set_percentage_actor_text: function() {
+		this.percentage_actor = new PercentageText();
+		this._add_percentage_actor();
+	},
+
+	_add_percentage_actor: function() {
+		this.actor.add(this.percentage_actor.actor);
+		this.show();
+	},
+
+	hide: function() {
+		this.actor.hide();
+	},
+	
+	show: function() {
+		this.actor.show();
+	},
+
+};
+
+
+
+
+
+
+function PercentageCircle(panel_height) {
+	this._init(panel_height);
+}
+
+PercentageCircle.prototype = {
+	
+	_init: function(panel_height) {
+
+		this.panel_height = panel_height;
+		this.percentage = 0;
+
+		this.actor = new St.DrawingArea();
+		this._init_actor();
+	},
+
+	_init_actor: function() {
+		this.actor.height = this.panel_height;
+		this.actor.width = this.panel_height * 0.7;
+		this.actor.connect('repaint', Lang.bind(this, this.on_repaint));
+	},
+
+	on_repaint: function(drawing_area) {
+		this.draw_percentage_circle(drawing_area);
+	},
+
+	draw_percentage_circle: function(drawing_area) {
+		this.set_drawing_color_gradient_percentage(drawing_area);
+		let x = this.actor.width / 2;
+		let y = this.actor.height / 2;
+		let radius = this.actor.width / 2;
+        this.draw_circle(drawing_area, x, y, radius);
+	},
+
+	set_drawing_color_gradient_percentage: function(drawing_area) {
+		let cairo_context = drawing_area.get_context();
+        let pattern = new Cairo.LinearGradient(0, 0, 0, this.actor.height);
+		let gradient_stop = this._get_gradient_stop();
+		let red = 0.7
+		let green = 0.7;
+		let blue = 0.0;
+		let alpha = 1.0;
+        pattern.addColorStopRGBA(gradient_stop, 0.0, green, blue, alpha);
+        pattern.addColorStopRGBA(gradient_stop, red, 0.0, blue, alpha);
+        cairo_context.setSource(pattern);
+	},
+
+	_get_gradient_stop: function() {
+		let gradient_stop = (100 - this.percentage)/100;
+		let gradient_stop_circle_not_red = 0.2;
+		if(this.percentage < 100 && gradient_stop < gradient_stop_circle_not_red) {
+			gradient_stop = gradient_stop_circle_not_red;
+		}
+		return gradient_stop;
+	},
+
+	draw_circle: function(drawing_area, x, y, radius) {
+		let cairo_context = drawing_area.get_context();
+        cairo_context.arc(x, y, radius, 0, 2*Math.PI);
+        cairo_context.fill(); 
+	},
+
+	set_percentage: function(percentage) {
+		this.percentage = percentage >= 100 ? 100 : percentage;
+		this.repaint();
+	},
+
+	repaint: function() {
+		this.actor.queue_repaint();
+	},
+
+}
+
+
+
+
+function PercentageText() {
+	this._init();
+}
+
+PercentageText.prototype = {
+	
+	_init: function() {
+		this.percentage = 0;
+		this.actor = new St.Label();
+	},
+
+	set_percentage: function(percentage) {
+		this.percentage = Math.floor(percentage);
+		let percentage_text = this.percentage.toString() + "%";
+		this.actor.set_text(percentage_text);
+	},
+
+}
+
+
+
+
+
 
 
