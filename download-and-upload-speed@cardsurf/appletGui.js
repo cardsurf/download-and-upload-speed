@@ -97,8 +97,8 @@ AppletGui.prototype = {
 		if(this.interface_type == AppletConstants.GuiType.COMPACT) {
 			this.actor.set_vertical(true);
 		}
-		this.actor.add(this.iconlabel_received.actor);
 		this.actor.add(this.iconlabel_sent.actor);
+		this.actor.add(this.iconlabel_received.actor);
 	},
 
 	set_reveived_icon: function(icon_path) {

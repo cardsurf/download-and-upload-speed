@@ -42,13 +42,13 @@
 	},
 	"gui_received_icon_filename" : {
 		"type" : "filechooser",
-		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/arrow_down_blue.svg",
+		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/yslai95/arrow-purple-up.png",
 		"description" : "Download icon",
 		"tooltip": "An icon displayed next to download speed in the panel"
 	},
 	"gui_sent_icon_filename" : {
 		"type" : "filechooser",
-		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/arrow_up_red.svg",
+		"default" : "~/.local/share/cinnamon/applets/download-and-upload-speed@cardsurf/icons/yslai95/arrow-red-up.png",
 		"description" : "Upload icon",
 		"tooltip": "An icon displayed next to upload speed in the panel"
 	},
