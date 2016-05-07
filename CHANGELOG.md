@@ -1,8 +1,8 @@
 # Changelog
 
 ### Version 1.2.0
-Added setting the data limit
-Added the indicator of data limit usage
+Added setting the data limit  
+Added the indicator of data limit usage  
 Added the command invocation when the data limit exceeded  
 Added setting the number of decimal places of download and upload speed displayed in the panel
 
