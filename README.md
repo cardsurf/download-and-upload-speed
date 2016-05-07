@@ -17,7 +17,7 @@ An applet that shows usage of a network interface for Linux Mint Cinnamon
   * Customize a command used to list current Internet connections
 
 ##Download
-[Download zip archive](http://cinnamon-spices.linuxmint.com/uploads/applets/3UZM-QGBD-GMR0.zip)
+[Download zip archive](https://cinnamon-spices.linuxmint.com/uploads/applets/SS0M-9V1G-8CHO.zip)
 
 ##Installation
 1. Extract .zip archive to ~/.local/share/cinnamon/applets
