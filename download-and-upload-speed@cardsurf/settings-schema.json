@@ -149,7 +149,7 @@
 	 },
 	"data_limit_command": {
 		"type": "entry",
-		"default": "echo \"Data limit exceeded. This terminal will close in 5 seconds.\"; sleep 5; exit 0;",
+		"default": "echo \\\"Data limit exceeded. This terminal will close in 5 seconds.\\\"; sleep 5; exit 0;",
 		"description": "Command",
 		"tooltip": "A command to invoke"
 	},
