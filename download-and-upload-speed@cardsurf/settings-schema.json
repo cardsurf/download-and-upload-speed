@@ -103,7 +103,7 @@
 	 "launch_terminal" : {
 		"type" : "checkbox",
 		"default" : true,
-		"description": "List current Internet connections on mouse click",
+		"description": "List current Internet connections on left mouse click",
 		"tooltip": "Open a terminal with a list of current connections on a left mouse click. The next click closes the terminal."
 	 },
 	"list_connections_command": {

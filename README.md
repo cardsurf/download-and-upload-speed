@@ -9,8 +9,8 @@ An applet that shows usage of a network interface for Linux Mint Cinnamon
 * Opens a terminal with list of current Internet connections on a left mouse click.  
   Closes the terminal on the next mouse click.
 * Shows data limit usage
-  * Displays the percentage of the data limit used as the circle or the text
-  * Invoke a command when the data limit exceeded
+  * Displays a percentage of data limit usage as a circle or text
+  * Invokes a command when the data limit exceeded
 * Customizable
   * Two GUI types
   * Enable or disable a hover popup
