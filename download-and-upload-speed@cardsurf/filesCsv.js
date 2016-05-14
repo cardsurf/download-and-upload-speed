@@ -7,14 +7,14 @@ const Files = AppletDirectory.files;
 
 
 
-function BytesRowCsv(date_int, bytes_received, bytes_sent) {
-	this._init(date_int, bytes_received, bytes_sent);
+function BytesRowCsv(date, bytes_received, bytes_sent) {
+	this._init(date, bytes_received, bytes_sent);
 };
 
 BytesRowCsv.prototype = {
 
-    _init: function(date_int, bytes_received, bytes_sent) {
-        this.date_int = date_int;
+    _init: function(date, bytes_received, bytes_sent) {
+        this.date = date;
         this.bytes_received = bytes_received;
         this.bytes_sent = bytes_sent;
     },
