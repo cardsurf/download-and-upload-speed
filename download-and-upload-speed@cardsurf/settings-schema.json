@@ -24,6 +24,7 @@
 	},
 
 
+
 	"gui_speed_type" : {
 		"type": "combobox",
 		"default" : 0,
@@ -50,7 +51,7 @@
 	"gui_text_css": {
 		"type": "entry",
 		"default": "font-weight: bold;",
-		"description": "Text CSS ",
+		"description": "Text CSS",
 		"tooltip": "A CSS style applied to the text in the panel"
 	},
 	"gui_received_icon_filename" : {
@@ -65,20 +66,22 @@
 		"description" : "Upload icon",
 		"tooltip": "An icon displayed next to upload speed in the panel"
 	},
+
 	"gui_end" : {
 		"type" : "separator"
 	},
 
 
-	"hover_popup_start": {
+
+	"total_data_start": {
 		"type": "header",
-		"description": "Hover popup"
+		"description": "Total data"
 	},
 	"show_hover" : {
 		"type" : "checkbox",
 		"default" : true,
-		"description": "Enable hover popup",
-		"tooltip": "Show the hover popup with total bytes downloaded and uploaded"
+		"description": "Show total download and upload on hover",
+		"tooltip": "Show the hover popup with total amount of bytes downloaded and uploaded"
 	 },
 	 "bytes_start_time" : {
 		"type": "combobox",
@@ -96,13 +99,13 @@
 		    "30 days ago" : 30,
 		    "Custom date" : -2
 		},
-		"tooltip" : "Start time to count total bytes downloaded and uploaded"
+		"tooltip" : "Start time to count total amount of bytes downloaded and uploaded"
 	},
 	"custom_start_date": {
 		"type": "entry",
 		"default": "",
 		"description": "Custom date ",
-		"tooltip": "A custom date in YYYY-MM-DD format used as start time. The options is used if \"Custom date\" is selected in \"Start time\" combobox."
+		"tooltip": "A custom date in YYYY-MM-DD format used as start time. The option is used if \"Custom date\" is selected in \"Start time\" combobox."
 	},
 	"write_every": {
 		"type": "spinbutton",
@@ -111,29 +114,30 @@
 		"max": 1000000000,
 		"step": 10,
 		"units": "seconds",
-		"description": "Save bytes every",
-		"tooltip": "How often to save total amount of bytes downloaded and uploaded to a file. 0 means no saving to the file."
+		"description": "Save total data every",
+		"tooltip": "How often to save total amount of bytes downloaded and uploaded to the file. 0 means no saving to the file."
 	},
 	"hover_popup_text_css": {
 		"type": "entry",
 		"default": "font-size: 15px; padding: 5px; font-weight: normal;",
-		"description": "Text CSS ",
+		"description": "Popup text CSS",
 		"tooltip": "A CSS style applied to the description text in the hover popup"
 	},
 	"hover_popup_numbers_css": {
 		"type": "entry",
 		"default": "font-size: 15px; padding: 5px; font-weight: bold;",
-		"description": "Numbers CSS ",
+		"description": "Popup numbers CSS",
 		"tooltip": "A CSS style applied to numbers in the hover popup"
 	},
-	"hover_popup_end" : {
+	"total_data_end" : {
 		"type" : "separator"
 	},
 
 
-	"terminal_start": {
+
+	"connections_start": {
 		"type": "header",
-		"description": "Terminal"
+		"description": "Connections"
 	},
 	"launch_terminal" : {
 		"type" : "checkbox",
@@ -147,13 +151,15 @@
 		"description": "Command ",
 		"tooltip": "A command used to list current Internet connections"
 	},
-	"terminal_end": {
+	"connections_end": {
 		"type" : "separator"
 	},
 
+
+
 	"data_limit_start": {
 		"type": "header",
-		"description": "Data Limits"
+		"description": "Data limits"
 	},
 	"data_limit": {
 		"type": "spinbutton",
@@ -188,6 +194,11 @@
 		"description": "Command",
 		"tooltip": "A command to invoke"
 	},
+	"data_limit_end": {
+		"type" : "separator"
+	},
+
+
 
 	"network_interface" : {
 		"type": "generic",
