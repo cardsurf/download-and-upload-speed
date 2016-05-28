@@ -24,18 +24,18 @@ File.prototype = {
     },
 
     read: function() {
-		let array_bytes = this.read_bytes();
-		let string = array_bytes.toString().trim();
+		let array_chars = this.read_chars();
+		let string = array_chars.toString().trim();
         let array_strings = string.length == 0 ? [] : string.split(this.regex_newline);
         return array_strings;
     },
 
-    read_bytes: function() {
-		let [success, array_bytes] = GLib.file_get_contents(this.path, null, null);
+    read_chars: function() {
+		let [success, array_chars] = GLib.file_get_contents(this.path);
 		if(!success) {
              throw ("Unable to read file content. Path to the file: " + this.path);
         }
-        return array_bytes;
+        return array_chars;
     },
 
     overwrite: function(array_strings) {

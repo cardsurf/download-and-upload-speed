@@ -19,14 +19,14 @@ ConvertableDate.prototype = {
     },
 
     to_year_month_day_int: function() {
-        return parseInt(this.to_year_month_day_string());
+        return parseInt(this.to_year_month_day_string(""));
     },
     
-    to_year_month_day_string: function() {
-		let day = this._prepend_zero_if_single_digit(this.date.getDate().toString());
-		let month = this._prepend_zero_if_single_digit((this.date.getMonth() + 1).toString());
+    to_year_month_day_string: function(separator) {
 		let year = this.date.getFullYear().toString();
-        return year + month + day;
+		let month = this._prepend_zero_if_single_digit((this.date.getMonth() + 1).toString());
+		let day = this._prepend_zero_if_single_digit(this.date.getDate().toString());
+        return year + separator + month + separator + day;
     },
 
     _prepend_zero_if_single_digit: function(number_string) {

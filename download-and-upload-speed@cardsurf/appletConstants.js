@@ -18,3 +18,16 @@ const DecimalPlaces = {
     THREE: 3
 }
 
+const BytesStartTime = {
+	START_OF_CURRENT_SESSION : -1,
+	TODAY: 0,
+	YESTERDAY : 1,
+	THREE_DAYS_AGO : 3,
+	FIVE_DAYS_AGO : 5,
+	SEVEN_DAYS_AGO : 7,
+	TEN_DAYS_AGO : 10,
+	FOURTEEN_DAYS_AGO : 14,
+	THIRTY_DAYS_AGO: 30,
+	CUSTOM_DATE : -2
+}
+
