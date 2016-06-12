@@ -62,6 +62,7 @@ MyApplet.prototype = {
 
 		this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id);
 		this.update_every = 1.0;
+        this.display_mode = AppletConstants.DisplayMode.SPEED;
         this.custom_start_date = "";
 		this.gui_speed_type = 0;
 		this.gui_data_limit_type = 0;
@@ -107,6 +108,7 @@ MyApplet.prototype = {
 	_bind_settings: function () {
 		for(let [binding, property_name, callback] of [
 						[Settings.BindingDirection.IN, "update_every", null],
+						[Settings.BindingDirection.IN, "display_mode", null],
 						[Settings.BindingDirection.IN, "launch_terminal", null],
 						[Settings.BindingDirection.IN, "list_connections_command", this.on_list_connections_command_changed],
 						[Settings.BindingDirection.IN, "write_every", null],
@@ -402,8 +404,10 @@ MyApplet.prototype = {
 		this.update_bytes_sent();
 		this.update_bytes_total();
 
-		let received = this.convert_bytes_to_readable_unit(this.bytes_received_iteration);
-		let sent = this.convert_bytes_to_readable_unit(this.bytes_sent_iteration);
+		let received = this.scale(this.bytes_received_iteration);
+		let sent = this.scale(this.bytes_sent_iteration);
+		let received = this.convert_bytes_to_readable_unit(received);
+		let sent = this.convert_bytes_to_readable_unit(sent);
 		let received_total = this.convert_two_decimals(this.bytes_received_total);
 		let sent_total = this.convert_two_decimals(this.bytes_sent_total);
 
@@ -432,6 +436,10 @@ MyApplet.prototype = {
         }
 		return file_content;
     },	
+
+    scale: function (bytes) {
+        return this.display_mode == AppletConstants.DisplayMode.SPEED ? Math.round(bytes / this.update_every) : bytes;
+    },
 
     calculate_bytes_difference: function (bytes, previous_bytes) {
 		let difference = bytes - previous_bytes;
@@ -629,8 +637,8 @@ MyApplet.prototype = {
          let today = new Dates.ConvertableDate().to_year_month_day_int();
          let last = rows[rows.length - 1];
          if(last.date == today) {
-              last.bytes_received += this.bytes_received_session;
-              last.bytes_sent += this.bytes_sent_session;
+              last.bytes_received += this.bytes_received_last_write;
+              last.bytes_sent += this.bytes_sent_last_write;
               rows[rows.length - 1] = last;
          }
 		 else {

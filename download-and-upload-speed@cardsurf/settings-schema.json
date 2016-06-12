@@ -13,7 +13,18 @@
 		"max": 60.0,
 		"step": 0.1,
 		"units": "seconds",
-		"description": "Update every"
+		"description": "Compute every",
+		"tooltip" : "How often to calculate download and upload speed"
+	},
+	"display_mode" : {
+		"type": "combobox",
+		"default" : 0,
+		"description" : "Show",
+		"options" : {
+		    "Average speed per second" : 0,
+		    "Number of bytes transferred" : 1
+		},
+		"tooltip" : "Values shown in the panel"
 	},
 	"configuration_end" : {
 		"type" : "separator"
@@ -114,7 +125,7 @@
 		"max": 1000000000,
 		"step": 10,
 		"units": "seconds",
-		"description": "Save total data every",
+		"description": "Save every",
 		"tooltip": "How often to save total amount of bytes downloaded and uploaded to the file. 0 means no saving to the file."
 	},
 	"hover_popup_text_css": {

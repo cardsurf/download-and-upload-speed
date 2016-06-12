@@ -1,4 +1,9 @@
 
+const DisplayMode = {
+    SPEED: 0,
+    DATA: 1
+}
+
 const GuiSpeedType = {
     COMPACT: 0,
     LARGE: 1
