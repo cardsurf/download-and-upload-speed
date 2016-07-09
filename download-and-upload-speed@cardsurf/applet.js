@@ -46,6 +46,8 @@ MyApplet.prototype = {
 		this.bytes_sent_last_write = 0;
 		this.bytes_sent_total = 0;
 		this.bytes_total = 0;
+		this.dictionary_interface_bytes_received_user_session = {}
+		this.dictionary_interface_bytes_sent_user_session = {}
 
 		this.network_directory = "/sys/class/net/";
 		this.network_interfaces = [];
@@ -87,6 +89,7 @@ MyApplet.prototype = {
 		this._bind_settings();
         this._connect_signals();
 		this._init_network_properties();
+		this._init_dictionaries();
 		this._init_filename_properties();
         this._init_files();
         this._init_custom_start_date();
@@ -145,7 +148,7 @@ MyApplet.prototype = {
 
 	on_bytes_start_time_changed: function () {
 		if(this.bytes_start_time == AppletConstants.BytesStartTime.START_OF_CURRENT_SESSION) {
-			this.set_bytes_total_to_session();
+			this._set_bytes_total_to_user_session();
 		}
 		else {
 			this._read_bytes_total();
@@ -257,6 +260,14 @@ MyApplet.prototype = {
 		return array.indexOf(element) > -1;
 	},
 
+	_init_dictionaries: function () {
+		for (let i = 0; i < this.network_interfaces.length; i++) {
+			let network_interface = this.network_interfaces[i];
+			this.dictionary_interface_bytes_received_user_session[network_interface] = 0;
+			this.dictionary_interface_bytes_sent_user_session[network_interface] = 0;
+		}
+	},
+
 	_init_filename_properties: function () {
 		this.filepath_bytes_received = this.network_directory + this.network_interface + '/statistics/rx_bytes';
 		this.filepath_bytes_sent = this.network_directory + this.network_interface + '/statistics/tx_bytes';
@@ -278,12 +289,33 @@ MyApplet.prototype = {
 
 	on_menu_item_network_clicked: function (option_name, option_index) {
 		if(this.network_interface != option_name) {
+			this._update_bytes_user_session();
             this.network_interface = option_name;
             this._write_bytes_total();
 			this._init_filename_properties();
             this._init_files();
 			this._reset_bytes();
+			this._set_bytes_total_to_user_session();
 		}
+	},
+
+	_update_bytes_user_session: function () {
+		this.dictionary_interface_bytes_received_user_session[this.network_interface] = 
+			this.network_interface in this.dictionary_interface_bytes_received_user_session ? 
+        	this.dictionary_interface_bytes_received_user_session[this.network_interface] + this.bytes_received_session : this.bytes_received_session;
+
+		this.dictionary_interface_bytes_sent_user_session[this.network_interface] = 
+			this.network_interface in this.dictionary_interface_bytes_sent_user_session ? 
+        	this.dictionary_interface_bytes_sent_user_session[this.network_interface] + this.bytes_sent_session : this.bytes_sent_session;
+	},
+
+	_set_bytes_total_to_user_session: function () {
+		this.bytes_received_total = this.network_interface in this.dictionary_interface_bytes_received_user_session ? 
+        	                        this.dictionary_interface_bytes_received_user_session[this.network_interface]  : 0 ;
+
+		this.bytes_sent_total = this.network_interface in this.dictionary_interface_bytes_sent_user_session ? 
+        	                    this.dictionary_interface_bytes_sent_user_session[this.network_interface]  : 0 ;
+		this.update_bytes_total();
 	},
 
 	_init_files: function () {
@@ -547,12 +579,6 @@ MyApplet.prototype = {
 		    Mainloop.timeout_add(1000, Lang.bind(this, this._run_write_bytes));
         }
     },
-
-	set_bytes_total_to_session: function () {
-        this.bytes_received_total = this.bytes_received_session;
-	    this.bytes_sent_total = this.bytes_sent_session;
-        this.bytes_total = this.bytes_received_total + this.bytes_sent_total;
-	},
 
 	calculate_bytes_total: function () {
         this.bytes_received_total = this.bytes_received_session;
