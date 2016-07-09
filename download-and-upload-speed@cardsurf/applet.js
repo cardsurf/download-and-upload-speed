@@ -37,12 +37,12 @@ MyApplet.prototype = {
 
 		this.bytes_received_previous = 0;
 		this.bytes_received_iteration = 0;
-		this.bytes_received_session = 0;
+		this.bytes_received_interface_session = 0;
 		this.bytes_received_last_write = 0;
 		this.bytes_received_total = 0;
 		this.bytes_sent_previous = 0;
 		this.bytes_sent_iteration = 0;
-		this.bytes_sent_session = 0;
+		this.bytes_sent_interface_session = 0;
 		this.bytes_sent_last_write = 0;
 		this.bytes_sent_total = 0;
 		this.bytes_total = 0;
@@ -146,13 +146,25 @@ MyApplet.prototype = {
 		this.list_connections_process.bash_command = this.list_connections_command;
 	},
 
-	on_bytes_start_time_changed: function () {
+	on_bytes_start_time_changed: function () {		
 		if(this.bytes_start_time == AppletConstants.BytesStartTime.START_OF_CURRENT_SESSION) {
 			this._set_bytes_total_to_user_session();
 		}
 		else {
 			this._read_bytes_total();
 		}
+	},
+
+	_set_bytes_total_to_user_session: function () {
+		this.bytes_received_total = this.network_interface in this.dictionary_interface_bytes_received_user_session ? 
+                                    this.dictionary_interface_bytes_received_user_session[this.network_interface] + this.bytes_received_interface_session :
+                                    this.bytes_received_interface_session;
+
+		this.bytes_sent_total = this.network_interface in this.dictionary_interface_bytes_sent_user_session ? 
+                            	this.dictionary_interface_bytes_sent_user_session[this.network_interface] + this.bytes_sent_interface_session : 
+                                this.bytes_sent_interface_session;
+
+		this.update_bytes_total();
 	},
 
 	on_custom_start_date_changed: function () {
@@ -295,27 +307,20 @@ MyApplet.prototype = {
 			this._init_filename_properties();
             this._init_files();
 			this._reset_bytes();
-			this._set_bytes_total_to_user_session();
+			this.on_bytes_start_time_changed();
 		}
 	},
 
 	_update_bytes_user_session: function () {
 		this.dictionary_interface_bytes_received_user_session[this.network_interface] = 
 			this.network_interface in this.dictionary_interface_bytes_received_user_session ? 
-        	this.dictionary_interface_bytes_received_user_session[this.network_interface] + this.bytes_received_session : this.bytes_received_session;
+            this.dictionary_interface_bytes_received_user_session[this.network_interface] + this.bytes_received_interface_session :
+            this.bytes_received_interface_session;
 
 		this.dictionary_interface_bytes_sent_user_session[this.network_interface] = 
 			this.network_interface in this.dictionary_interface_bytes_sent_user_session ? 
-        	this.dictionary_interface_bytes_sent_user_session[this.network_interface] + this.bytes_sent_session : this.bytes_sent_session;
-	},
-
-	_set_bytes_total_to_user_session: function () {
-		this.bytes_received_total = this.network_interface in this.dictionary_interface_bytes_received_user_session ? 
-        	                        this.dictionary_interface_bytes_received_user_session[this.network_interface]  : 0 ;
-
-		this.bytes_sent_total = this.network_interface in this.dictionary_interface_bytes_sent_user_session ? 
-        	                    this.dictionary_interface_bytes_sent_user_session[this.network_interface]  : 0 ;
-		this.update_bytes_total();
+        	this.dictionary_interface_bytes_sent_user_session[this.network_interface] + this.bytes_sent_interface_session : 
+            this.bytes_sent_interface_session;
 	},
 
 	_init_files: function () {
@@ -346,8 +351,8 @@ MyApplet.prototype = {
 	},
 
 	_reset_bytes_session: function () {
-		this.bytes_received_session = 0;
-		this.bytes_sent_session = 0;
+		this.bytes_received_interface_session = 0;
+		this.bytes_sent_interface_session = 0;
 	},
 
 	_reset_bytes_last_write: function () {
@@ -454,7 +459,7 @@ MyApplet.prototype = {
 		let bytes_received = this.read_file(this.file_bytes_received);
 		this.bytes_received_iteration = this.calculate_bytes_difference(bytes_received, this.bytes_received_previous);
 		this.bytes_received_previous = bytes_received;
-		this.bytes_received_session += this.bytes_received_iteration;
+		this.bytes_received_interface_session += this.bytes_received_iteration;
 		this.bytes_received_last_write += this.bytes_received_iteration;
 		this.bytes_received_total += this.bytes_received_iteration;
     },
@@ -533,7 +538,7 @@ MyApplet.prototype = {
 		let bytes_sent = this.read_file(this.file_bytes_sent);
 		this.bytes_sent_iteration = this.calculate_bytes_difference(bytes_sent, this.bytes_sent_previous);
 		this.bytes_sent_previous = bytes_sent;
-		this.bytes_sent_session += this.bytes_sent_iteration;
+		this.bytes_sent_interface_session += this.bytes_sent_iteration;
 		this.bytes_sent_last_write += this.bytes_sent_iteration;
         this.bytes_sent_total += this.bytes_sent_iteration;
     },
@@ -579,11 +584,6 @@ MyApplet.prototype = {
 		    Mainloop.timeout_add(1000, Lang.bind(this, this._run_write_bytes));
         }
     },
-
-	calculate_bytes_total: function () {
-        this.bytes_received_total = this.bytes_received_session;
-	    this.bytes_sent_total = this.bytes_sent_session;
-	},
 
     _read_bytes_total: function() {
 		try {
@@ -675,7 +675,7 @@ MyApplet.prototype = {
 
     _add_row: function(rows) {
         let today = new Dates.ConvertableDate().to_year_month_day_int();
-        let row = new FilesCsv.BytesRowCsv(today, this.bytes_received_session, this.bytes_sent_session);
+        let row = new FilesCsv.BytesRowCsv(today, this.bytes_received_interface_session, this.bytes_sent_interface_session);
 	    rows.push(row);           
 		return rows;
     },
