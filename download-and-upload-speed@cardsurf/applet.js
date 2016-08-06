@@ -38,16 +38,19 @@ MyApplet.prototype = {
 		this.bytes_received_previous = 0;
 		this.bytes_received_iteration = 0;
 		this.bytes_received_interface_session = 0;
-		this.bytes_received_last_write = 0;
+		this.bytes_received_last_write_before_midnight = 0;
+		this.bytes_received_last_write_after_midnight = 0;
 		this.bytes_received_total = 0;
 		this.bytes_sent_previous = 0;
 		this.bytes_sent_iteration = 0;
 		this.bytes_sent_interface_session = 0;
-		this.bytes_sent_last_write = 0;
+		this.bytes_sent_last_write_before_midnight = 0;
+		this.bytes_sent_last_write_after_midnight = 0;
 		this.bytes_sent_total = 0;
 		this.bytes_total = 0;
-		this.dictionary_interface_bytes_received_user_session = {}
-		this.dictionary_interface_bytes_sent_user_session = {}
+		this.dictionary_interface_bytes_received_user_session = {};
+		this.dictionary_interface_bytes_sent_user_session = {};
+		this.date_midnight = null;
 
 		this.network_directory = "/sys/class/net/";
 		this.network_interfaces = [];
@@ -61,6 +64,7 @@ MyApplet.prototype = {
 		this.list_connections_command = "";
 		this.list_connections_process = null;
 		this.data_limit_command_invoked = false;
+
 
 		this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id);
 		this.update_every = 1.0;
@@ -92,6 +96,7 @@ MyApplet.prototype = {
 		this._init_dictionaries();
 		this._init_filename_properties();
         this._init_files();
+		this._init_dates();
         this._init_custom_start_date();
 		this._init_list_connections_process();
 		this._init_menu_item_gui();
@@ -332,6 +337,15 @@ MyApplet.prototype = {
         }
 	},
 
+	_init_dates: function () {
+		this.date_midnight = new Dates.ConvertableDate();
+		this.date_midnight.add_days(1);
+		this.date_midnight.set_hour(0);
+		this.date_midnight.set_minute(0);
+		this.date_midnight.set_second(0);
+		this.date_midnight.set_millisecond(0);
+	},
+
 	_reset_bytes: function () {
 		this._reset_bytes_previous();
 		this._reset_bytes_iteration();
@@ -356,8 +370,10 @@ MyApplet.prototype = {
 	},
 
 	_reset_bytes_last_write: function () {
-		this.bytes_received_last_write = 0;
-		this.bytes_sent_last_write = 0;
+		this.bytes_received_last_write_before_midnight = 0;
+		this.bytes_received_last_write_after_midnight = 0;
+		this.bytes_sent_last_write_after_midnight = 0;
+		this.bytes_sent_last_write_before_midnight = 0;
 	},
 
 	_reset_bytes_total: function () {
@@ -439,11 +455,12 @@ MyApplet.prototype = {
     _calculate_speed: function () {
 		this.update_bytes_received();
 		this.update_bytes_sent();
+		this.update_bytes_last_write();
 		this.update_bytes_total();
 
 		let received = this.scale(this.bytes_received_iteration);
-		let sent = this.scale(this.bytes_sent_iteration);
 		let received = this.convert_bytes_to_readable_unit(received);
+		let sent = this.scale(this.bytes_sent_iteration);
 		let sent = this.convert_bytes_to_readable_unit(sent);
 		let received_total = this.convert_two_decimals(this.bytes_received_total);
 		let sent_total = this.convert_two_decimals(this.bytes_sent_total);
@@ -460,7 +477,6 @@ MyApplet.prototype = {
 		this.bytes_received_iteration = this.calculate_bytes_difference(bytes_received, this.bytes_received_previous);
 		this.bytes_received_previous = bytes_received;
 		this.bytes_received_interface_session += this.bytes_received_iteration;
-		this.bytes_received_last_write += this.bytes_received_iteration;
 		this.bytes_received_total += this.bytes_received_iteration;
     },
 
@@ -539,8 +555,19 @@ MyApplet.prototype = {
 		this.bytes_sent_iteration = this.calculate_bytes_difference(bytes_sent, this.bytes_sent_previous);
 		this.bytes_sent_previous = bytes_sent;
 		this.bytes_sent_interface_session += this.bytes_sent_iteration;
-		this.bytes_sent_last_write += this.bytes_sent_iteration;
         this.bytes_sent_total += this.bytes_sent_iteration;
+    },
+
+	update_bytes_last_write: function () {
+		let date_now = new Dates.ConvertableDate();
+		if(date_now.is_earlier(this.date_midnight)) {
+			this.bytes_received_last_write_before_midnight += this.bytes_received_iteration;
+			this.bytes_sent_last_write_before_midnight += this.bytes_sent_iteration;
+		}
+		else {
+			this.bytes_received_last_write_after_midnight += this.bytes_received_iteration;
+			this.bytes_sent_last_write_after_midnight += this.bytes_sent_iteration;
+		}
     },
 
 	update_bytes_total: function () {
@@ -599,7 +626,7 @@ MyApplet.prototype = {
 		let rows = this.file_bytes_total.get_byte_rows();
 		this._reset_bytes_total();
 
-		for (let i = rows.length - 1; i >= 0; --i) {
+		for (let i = 0; i < rows.length; ++i) {
 		   let row = rows[i];
 		   if(row.date >= date_from) {
 				this.bytes_received_total += row.bytes_received;
@@ -632,8 +659,10 @@ MyApplet.prototype = {
 	},
 
 	add_last_write_bytes_to_total: function () {
-        this.bytes_received_total += this.bytes_received_last_write;
-	    this.bytes_sent_total += this.bytes_sent_last_write;
+        this.bytes_received_total += this.bytes_received_last_write_before_midnight;
+        this.bytes_received_total += this.bytes_received_last_write_after_midnight;
+	    this.bytes_sent_total += this.bytes_sent_last_write_before_midnight;
+	    this.bytes_sent_total += this.bytes_sent_last_write_after_midnight;
         this.bytes_total = this.bytes_received_total + this.bytes_sent_total;
 	},
 
@@ -642,6 +671,7 @@ MyApplet.prototype = {
 		    if(this.write_every > 0) {
 				this._write_bytes_total_file();
 			 	this._reset_bytes_last_write();
+			 	this._init_dates();
 		    }
         }		
         catch(exception) {
@@ -650,39 +680,75 @@ MyApplet.prototype = {
 
     _write_bytes_total_file: function() {
 		let rows = this.file_bytes_total.get_byte_rows();
-        if(rows.length > 0) {
-            rows = this._update_or_append_row(rows);
-        }
-        else {
-	        rows = this._add_row(rows);
-        }
+        rows = this._update_or_prepend_row_total_bytes_before_midnight(rows);
+        rows = this._update_or_prepend_row_total_bytes_after_midnight(rows);
         this.file_bytes_total.overwrite(rows);
     },
 
-    _update_or_append_row: function(rows) {
-         let today = new Dates.ConvertableDate().to_year_month_day_int();
-         let last = rows[rows.length - 1];
-         if(last.date == today) {
-              last.bytes_received += this.bytes_received_last_write;
-              last.bytes_sent += this.bytes_sent_last_write;
-              rows[rows.length - 1] = last;
-         }
-		 else {
-			rows = this._add_row(rows);                
-         }
-         return rows;
+    _update_or_prepend_row_total_bytes_before_midnight: function(rows) {
+		let date = this._get_date_before_midnight();
+		let index = this._get_index(rows, date);
+        return index >= 0 ? this._update_row_total_bytes_before_midnight(rows, index) : this._prepend_row_total_bytes_before_midnight(rows, date);
     },
 
-    _add_row: function(rows) {
-        let today = new Dates.ConvertableDate().to_year_month_day_int();
-        let row = new FilesCsv.BytesRowCsv(today, this.bytes_received_interface_session, this.bytes_sent_interface_session);
-	    rows.push(row);           
+    _get_date_before_midnight: function() {
+		let date = this.date_midnight.get_deep_copy();
+		date.add_days(-1);
+		return date;
+    },
+
+    _get_index: function(rows, convertable_date) {
+		let date_int = convertable_date.to_year_month_day_int();
+		for(let i = 0; i < rows.length; ++i) {
+			let row = rows[i];
+			if(row.date == date_int) {
+				return i;
+			}
+		}
+		return -1;
+    },
+
+    _update_row_total_bytes_before_midnight: function(rows, index) {
+		let row = rows[index];
+        row.bytes_received += this.bytes_received_last_write_before_midnight;
+        row.bytes_sent += this.bytes_sent_last_write_before_midnight;
+		rows[index] = row;          
+		return rows;
+    },
+
+    _prepend_row_total_bytes_before_midnight: function(rows, convertable_date) {
+		if(this.bytes_received_last_write_before_midnight > 0 || this.bytes_sent_last_write_before_midnight > 0) {
+		    let date_int = convertable_date.to_year_month_day_int();
+		    let row = new FilesCsv.BytesRowCsv(date_int, this.bytes_received_last_write_before_midnight, this.bytes_sent_last_write_before_midnight);
+			rows.unshift(row);
+		}
+		return rows;
+    },
+
+    _update_or_prepend_row_total_bytes_after_midnight: function(rows) {
+		let date = this.date_midnight;
+		let index = this._get_index(rows, date);
+        return index >= 0 ? this._update_row_total_bytes_after_midnight(rows, index) : this._prepend_row_total_bytes_after_midnight(rows, date);
+    },
+
+    _update_row_total_bytes_after_midnight: function(rows, index) {
+		let row = rows[index];
+        row.bytes_received += this.bytes_received_last_write_after_midnight;
+        row.bytes_sent += this.bytes_sent_last_write_after_midnight;
+		rows[index] = row;          
+		return rows;
+    },
+
+    _prepend_row_total_bytes_after_midnight: function(rows, convertable_date) {
+		if(this.bytes_received_last_write_after_midnight > 0 || this.bytes_sent_last_write_after_midnight > 0) {
+        	let date_int = convertable_date.to_year_month_day_int();
+        	let row = new FilesCsv.BytesRowCsv(date_int, this.bytes_received_last_write_after_midnight, this.bytes_sent_last_write_after_midnight);
+	    	rows.unshift(row);           
+		}
 		return rows;
     },
 
 };
-
-
 
 
 
