@@ -4,6 +4,11 @@ const DisplayMode = {
     DATA: 1
 }
 
+const UnitType = {
+    BYTES: 0,
+    BITS: 1
+}
+
 const GuiSpeedType = {
     COMPACT: 0,
     LARGE: 1

@@ -67,8 +67,10 @@ MyApplet.prototype = {
 		this.data_limit_command_invoked = false;
 
 		this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id);
-		this.update_every = 1.0;
+
         this.display_mode = AppletConstants.DisplayMode.SPEED;
+		this.unit_type = AppletConstants.UnitType.BYTES;
+		this.update_every = 1.0;
         this.custom_start_date = "";
 		this.gui_speed_type = 0;
 		this.gui_data_limit_type = 0;
@@ -118,8 +120,9 @@ MyApplet.prototype = {
      
 	_bind_settings: function () {
 		for(let [binding, property_name, callback] of [
-						[Settings.BindingDirection.IN, "update_every", null],
 						[Settings.BindingDirection.IN, "display_mode", null],
+						[Settings.BindingDirection.IN, "unit_type", null],
+						[Settings.BindingDirection.IN, "update_every", null],
 						[Settings.BindingDirection.IN, "launch_terminal", null],
 						[Settings.BindingDirection.IN, "list_connections_command", this.on_list_connections_command_changed],
 						[Settings.BindingDirection.IN, "write_every", null],
@@ -284,8 +287,8 @@ MyApplet.prototype = {
 	_init_network_interface: function () {
 		let network_interface = this.settings.getValue("network_interface");
 		let is_valid = this.array_contains(this.network_interfaces, network_interface);
-		if(!is_valid && this.network_interfaces.length > 0){
-			this.network_interface = this.network_interfaces[0];		
+		if(!is_valid && this.network_interfaces.length > 0) {
+			network_interface = this.network_interfaces[0];
 		}
 		return network_interface;
 	},
@@ -510,11 +513,11 @@ MyApplet.prototype = {
 		this.update_bytes_total();
 
 		let received = this.scale(this.bytes_received_iteration);
-		let received = this.convert_bytes_to_readable_unit(received);
+		let received = this.convert_to_readable_string(received);
 		let sent = this.scale(this.bytes_sent_iteration);
-		let sent = this.convert_bytes_to_readable_unit(sent);
-		let received_total = this.convert_two_decimals(this.bytes_received_total);
-		let sent_total = this.convert_two_decimals(this.bytes_sent_total);
+		let sent = this.convert_to_readable_string(sent);
+		let received_total = this.convert_to_two_decimals_string(this.bytes_received_total);
+		let sent_total = this.convert_to_two_decimals_string(this.bytes_sent_total);
 
 		this.gui_speed.set_received_text(received);
 		this.gui_speed.set_sent_text(sent);
@@ -553,17 +556,29 @@ MyApplet.prototype = {
 		return difference;
     },
 
-    convert_bytes_to_readable_unit: function (bytes) {
-		let [number, unit] = this._convert_to_readable_unit(bytes);
-		if(unit != "B") {
+    convert_to_readable_string: function (bytes) {
+		let [number, unit] = this.convert_to_readable_unit(bytes);
+		if(!this.is_base(unit)) {
 			number = this.round_output_number(number);
 		}
 
 		let output = number.toString() + unit;
 		return output;
-    },	
+    },
 
-	_convert_to_readable_unit: function (bytes) {
+    convert_to_readable_unit: function (bytes) {
+        if(this.unit_type == AppletConstants.UnitType.BYTES) {
+			let [number, unit] = this.convert_bytes_to_readable_unit(bytes);
+			return [number, unit];
+		}
+		else {
+			bits = this.convert_to_bits(bytes);
+			let [number, unit] = this.convert_bits_to_readable_unit(bits);
+			return [number, unit];
+		}
+    },
+
+	convert_bytes_to_readable_unit: function (bytes) {
 		if(bytes >= 1000000000000) {
 			return [bytes/1000000000000, "TB"];
 		}
@@ -578,6 +593,30 @@ MyApplet.prototype = {
 		}
 		return [bytes, "B"];
     },
+
+    convert_to_bits: function (bytes) {
+        return bytes * 8;
+    },
+
+	convert_bits_to_readable_unit: function (bits) {
+		if(bits >= 1000000000000) {
+			return [bits/1000000000000, "Tb"];
+		}
+		if(bits >= 1000000000) {
+			return [bits/1000000000, "Gb"];
+		}
+		if(bits >= 1000000) {
+			return [bits/1000000, "Mb"];
+		}
+		if(bits >= 1000) {
+			return [bits/1000, "kb"];
+		}
+		return [bits, "b"];
+    },
+
+    is_base: function (unit) {
+		return unit == "B" || unit == "b";
+    },	
 
 	round_output_number: function (number) {
 		let output_number = this.decimal_places == AppletConstants.DecimalPlaces.AUTO ?
@@ -595,11 +634,11 @@ MyApplet.prototype = {
 		return number.toFixed(2);
     },
 
-    convert_two_decimals: function (bytes) {
-		let [number, unit] = this._convert_to_readable_unit(bytes);
+    convert_to_two_decimals_string: function (bytes) {
+		let [number, unit] = this.convert_bytes_to_readable_unit(bytes);
 		let output = number.toFixed(2).toString() + " " + unit;
 		return output;
-    },	
+    },
 
 	update_bytes_sent: function () {
 		let bytes_sent = this.read_file(this.file_bytes_sent);

@@ -6,6 +6,27 @@
 		"type": "header",
 		"description": "Configuration"
 	},
+
+	"display_mode" : {
+		"type": "combobox",
+		"default" : 0,
+		"description" : "Show",
+		"options" : {
+		    "Average speed per second" : 0,
+		    "Amount of data transferred" : 1
+		},
+		"tooltip" : "Values shown in the panel"
+	},
+	"unit_type" : {
+		"type": "combobox",
+		"default" : 0,
+		"description" : "Unit",
+		"options" : {
+		    "Bytes" : 0,
+		    "Bits" : 1
+		},
+		"tooltip" : "Base data unit shown in the panel"
+	},
 	"update_every": {
 		"type": "spinbutton",
 		"default": 1.0,
@@ -14,17 +35,7 @@
 		"step": 0.1,
 		"units": "seconds",
 		"description": "Compute every",
-		"tooltip" : "How often to calculate download and upload speed"
-	},
-	"display_mode" : {
-		"type": "combobox",
-		"default" : 0,
-		"description" : "Show",
-		"options" : {
-		    "Average speed per second" : 0,
-		    "Number of bytes transferred" : 1
-		},
-		"tooltip" : "Values shown in the panel"
+		"tooltip" : "How often to compute download and upload speed"
 	},
 	"configuration_end" : {
 		"type" : "separator"
