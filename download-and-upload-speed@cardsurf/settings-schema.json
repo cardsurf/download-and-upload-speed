@@ -121,7 +121,7 @@
 		"default" : 0,
 		"description" : "Start",
 		"options" : {
-		    "Applet launch" : -1,
+		    "Launch of applet" : -1,
 		    "Today" : 0,
 		    "Yesterday" : 1,
 		    "3 days ago" : 3,

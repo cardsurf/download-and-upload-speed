@@ -345,7 +345,7 @@ MyApplet.prototype = {
 	},
 
 	_get_byte_start_time_options: function () {
-		 return [ "Applet launch",
+		 return [ "Launch of applet",
 		          "Today",
 		          "Yesterday",
 		          "3 days ago",
