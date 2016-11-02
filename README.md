@@ -5,7 +5,7 @@ An applet that shows usage of a network interface for Linux Mint Cinnamon
 
 ## Features
 * Shows current download and upload speed
-* Shows a hover popup with total data downloaded and uploaded
+* Shows a hover popup with total amount of data downloaded and uploaded
 * Opens a terminal with list of current Internet connections on a left mouse click.  
   Closes the terminal on the next mouse click.
 * Shows data limit usage
