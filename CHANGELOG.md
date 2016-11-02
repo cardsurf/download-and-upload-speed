@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 1.3.0
+Added an option to display total amount of data downloaded and uploaded from the custom date  
+Added an option to display average speed per second or amount of data transferred  
+Added an option to display values as multiples of bytes or bits  
+Updated configuration sections  
+
 ### Version 1.2.0
 Added setting the data limit  
 Added the indicator of data limit usage  
