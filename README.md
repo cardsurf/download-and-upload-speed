@@ -13,6 +13,8 @@ An applet that shows usage of a network interface for Linux Mint Cinnamon
   * Invokes a command when the data limit exceeded
 * Customizable
   * Two GUI types
+  * Show average speed per second or amount of data transferred
+  * Display values as multiples of bytes or bits  
   * Enable or disable a hover popup
   * Customize a command used to list current Internet connections
 
