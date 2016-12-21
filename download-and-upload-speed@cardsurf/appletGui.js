@@ -98,8 +98,8 @@ GuiSpeed.prototype = {
 		if(this.gui_speed_type == AppletConstants.GuiSpeedType.COMPACT) {
 			this.actor.set_vertical(true);
 		}
-		this.actor.add(this.iconlabel_received.actor);
 		this.actor.add(this.iconlabel_sent.actor);
+		this.actor.add(this.iconlabel_received.actor);
 	},
 
 	set_reveived_icon: function(icon_path) {
