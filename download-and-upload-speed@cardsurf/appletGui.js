@@ -139,7 +139,7 @@ GuiSpeed.prototype = {
         for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
         	iconlabel.set_label_style(css_style);
         }
-        
+
         this._resize_gui_elements_to_match_text(css_style);
     },
 
@@ -199,7 +199,7 @@ GuiSpeed.prototype = {
         }
         else {
         	text = "999." + this.repeat_string("9", this.decimal_places) + "MB";
-        } 
+        }
         return text;
     },
 
@@ -246,7 +246,7 @@ RadioMenuItem.prototype = {
 
     _init: function(title, option_names) {
         PopupMenu.PopupSubMenuMenuItem.prototype._init.call(this, title, false);
-        
+
         this.options = [];
         this.active_option_index = -1;
         this.callback_object = null;
@@ -275,7 +275,7 @@ RadioMenuItem.prototype = {
         		this.set_font_weight(this.active_option_index, "normal");
         	}
         	this.set_font_weight(index, "bold");
-        	this.active_option_index = index;		
+        	this.active_option_index = index;
         }
     },
 
@@ -293,10 +293,10 @@ RadioMenuItem.prototype = {
         if(this.callback_option_clicked != null) {
         	let option = this.get_active_option();
         	let option_name = this.get_option_name(option);
-        	this.callback_option_clicked.call(this.callback_object, option_name, this.active_option_index); 
+        	this.callback_option_clicked.call(this.callback_object, option_name, this.active_option_index);
         }
     },
-    
+
     get_active_option: function() {
         return this.options[this.active_option_index];
     },
@@ -475,7 +475,7 @@ GuiDataLimit.prototype = {
 
         this.actor = new St.BoxLayout();
         this.percentage_actor = null;
-        
+
         this._set_percentage_actor();
     },
 
@@ -528,7 +528,7 @@ GuiDataLimit.prototype = {
     hide: function() {
         this.actor.hide();
     },
-    
+
     show: function() {
         this.actor.show();
     },
@@ -545,7 +545,7 @@ function PercentageCircle(panel_height) {
 }
 
 PercentageCircle.prototype = {
-    
+
     _init: function(panel_height) {
 
         this.panel_height = panel_height;
@@ -598,7 +598,7 @@ PercentageCircle.prototype = {
     draw_circle: function(drawing_area, x, y, radius) {
         let cairo_context = drawing_area.get_context();
         cairo_context.arc(x, y, radius, 0, 2*Math.PI);
-        cairo_context.fill(); 
+        cairo_context.fill();
     },
 
     set_percentage: function(percentage) {
@@ -620,7 +620,7 @@ function PercentageText() {
 }
 
 PercentageText.prototype = {
-    
+
     _init: function() {
         this.percentage = 0;
         this.actor = new St.Label();

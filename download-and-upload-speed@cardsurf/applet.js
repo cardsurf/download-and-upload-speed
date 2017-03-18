@@ -117,7 +117,7 @@ MyApplet.prototype = {
         let directory = GLib.get_home_dir() + "/.local/share/cinnamon/applets/" + uuid + "/";
         return directory;
     },
-     
+
     _bind_settings: function () {
         for(let [binding, property_name, callback] of [
         				[Settings.BindingDirection.IN, "display_mode", null],
@@ -158,7 +158,7 @@ MyApplet.prototype = {
         this.list_connections_process.bash_command = this.list_connections_command;
     },
 
-    on_bytes_start_time_changed: function () {    	
+    on_bytes_start_time_changed: function () {
         this._update_menu_item_byte_start_times_option();
         if(this.bytes_start_time == AppletConstants.BytesStartTime.START_OF_CURRENT_SESSION) {
         	this._set_bytes_total_to_user_session();
@@ -169,11 +169,11 @@ MyApplet.prototype = {
     },
 
     _set_bytes_total_to_user_session: function () {
-        this.bytes_received_total = this.network_interface in this.dictionary_interface_bytes_received_user_session ? 
+        this.bytes_received_total = this.network_interface in this.dictionary_interface_bytes_received_user_session ?
         this.dictionary_interface_bytes_received_user_session[this.network_interface] +
         this.bytes_received_interface_session : this.bytes_received_interface_session;
 
-        this.bytes_sent_total = this.network_interface in this.dictionary_interface_bytes_sent_user_session ? 
+        this.bytes_sent_total = this.network_interface in this.dictionary_interface_bytes_sent_user_session ?
         this.dictionary_interface_bytes_sent_user_session[this.network_interface] +
         this.bytes_sent_interface_session : this.bytes_sent_interface_session;
 
@@ -192,11 +192,11 @@ MyApplet.prototype = {
     },
 
     _init_byte_start_times: function () {
-         this.byte_start_times = [ AppletConstants.BytesStartTime.START_OF_CURRENT_SESSION, 
+         this.byte_start_times = [ AppletConstants.BytesStartTime.START_OF_CURRENT_SESSION,
                                    AppletConstants.BytesStartTime.TODAY,
-                                   AppletConstants.BytesStartTime.YESTERDAY,  
+                                   AppletConstants.BytesStartTime.YESTERDAY,
                                    AppletConstants.BytesStartTime.THREE_DAYS_AGO,
-                                   AppletConstants.BytesStartTime.FIVE_DAYS_AGO, 
+                                   AppletConstants.BytesStartTime.FIVE_DAYS_AGO,
                                    AppletConstants.BytesStartTime.SEVEN_DAYS_AGO,
                                    AppletConstants.BytesStartTime.TEN_DAYS_AGO,
                                    AppletConstants.BytesStartTime.FOURTEEN_DAYS_AGO,
@@ -372,14 +372,14 @@ MyApplet.prototype = {
     },
 
     _update_bytes_user_session: function () {
-        this.dictionary_interface_bytes_received_user_session[this.network_interface] = 
-        	this.network_interface in this.dictionary_interface_bytes_received_user_session ? 
+        this.dictionary_interface_bytes_received_user_session[this.network_interface] =
+        	this.network_interface in this.dictionary_interface_bytes_received_user_session ?
             this.dictionary_interface_bytes_received_user_session[this.network_interface] +
             this.bytes_received_interface_session : this.bytes_received_interface_session;
 
-        this.dictionary_interface_bytes_sent_user_session[this.network_interface] = 
-        	this.network_interface in this.dictionary_interface_bytes_sent_user_session ? 
-            this.dictionary_interface_bytes_sent_user_session[this.network_interface] + 
+        this.dictionary_interface_bytes_sent_user_session[this.network_interface] =
+        	this.network_interface in this.dictionary_interface_bytes_sent_user_session ?
+            this.dictionary_interface_bytes_sent_user_session[this.network_interface] +
             this.bytes_sent_interface_session : this.bytes_sent_interface_session;
     },
 
@@ -457,7 +457,7 @@ MyApplet.prototype = {
     },
 
     close_hover_popup: function () {
-        this.hover_popup.close();	
+        this.hover_popup.close();
     },
 
     on_panel_height_changed: function() {
@@ -543,10 +543,10 @@ MyApplet.prototype = {
         try {
         	file_content = file.read_chars();
         }
-        catch(exception) { 
+        catch(exception) {
         }
         return file_content;
-    },    
+    },
 
     scale: function (bytes) {
         return this.display_mode == AppletConstants.DisplayMode.SPEED ? Math.round(bytes / this.update_every) : bytes;
@@ -620,7 +620,7 @@ MyApplet.prototype = {
 
     is_base: function (unit) {
         return unit == "B" || unit == "b";
-    },    
+    },
 
     round_output_number: function (number) {
         let output_number = this.decimal_places == AppletConstants.DecimalPlaces.AUTO ?
@@ -767,7 +767,7 @@ MyApplet.prototype = {
         	 	this._reset_bytes_last_write();
         	 	this._init_dates();
             }
-        }        
+        }
         catch(exception) {
         }
     },
@@ -782,7 +782,7 @@ MyApplet.prototype = {
     _update_or_prepend_row_before_midnight: function(rows) {
         let date = this._get_date_before_midnight();
         let index = this._get_index(rows, date);
-        return index >= 0 ? this._update_row_before_midnight(rows, index) : 
+        return index >= 0 ? this._update_row_before_midnight(rows, index) :
                             this._prepend_row_before_midnight(rows, date);
     },
 
@@ -807,7 +807,7 @@ MyApplet.prototype = {
         let row = rows[index];
         row.bytes_received += this.bytes_received_last_write_before_midnight;
         row.bytes_sent += this.bytes_sent_last_write_before_midnight;
-        rows[index] = row;          
+        rows[index] = row;
         return rows;
     },
 
@@ -815,7 +815,7 @@ MyApplet.prototype = {
         let transferred = this._bytes_transferred_before_midnight();
         if(transferred) {
             let date_int = convertable_date.to_year_month_day_int();
-            let row = new FilesCsv.BytesRowCsv(date_int, 
+            let row = new FilesCsv.BytesRowCsv(date_int,
                                                this.bytes_received_last_write_before_midnight,
                                                this.bytes_sent_last_write_before_midnight);
         	rows.unshift(row);
@@ -837,7 +837,7 @@ MyApplet.prototype = {
         let row = rows[index];
         row.bytes_received += this.bytes_received_last_write_after_midnight;
         row.bytes_sent += this.bytes_sent_last_write_after_midnight;
-        rows[index] = row;          
+        rows[index] = row;
         return rows;
     },
 
@@ -845,10 +845,10 @@ MyApplet.prototype = {
         let transferred = this._bytes_transferred_after_midnight();
         if(transferred) {
             let date_int = convertable_date.to_year_month_day_int();
-            let row = new FilesCsv.BytesRowCsv(date_int, 
-                                               this.bytes_received_last_write_after_midnight, 
+            let row = new FilesCsv.BytesRowCsv(date_int,
+                                               this.bytes_received_last_write_after_midnight,
                                                this.bytes_sent_last_write_after_midnight);
-            rows.unshift(row);           
+            rows.unshift(row);
         }
         return rows;
     },

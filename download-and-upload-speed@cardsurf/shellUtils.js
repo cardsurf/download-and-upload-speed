@@ -29,7 +29,7 @@ ShellOutputProcess.prototype = {
 
     spawn_sync: function() {
         let [success, standard_output_content, standard_error_content] = GLib.spawn_sync(
-        	null, 
+        	null,
         	this.command_argv,
         	null,
         	this.flags,
@@ -54,7 +54,7 @@ ShellOutputProcess.prototype = {
     },
 
     spawn_async: function() {
-        let [success, pid, standard_input_file_descriptor, 
+        let [success, pid, standard_input_file_descriptor,
              standard_output_file_descriptor, standard_error_file_descriptor] = GLib.spawn_async_with_pipes(
         	 null,
         	 this.command_argv,
@@ -149,7 +149,7 @@ TerminalProcess.prototype = {
 
     get_full_bash_command: function() {
         let start_bash = "bash -c \"";
-        let write_terminal_pid = "echo $$ > " + this.tmp_filepath + ";" 
+        let write_terminal_pid = "echo $$ > " + this.tmp_filepath + ";"
         let exec_user_command = this._bash_command;
         let keep_terminal_opened = "exec bash\"";
         return start_bash + write_terminal_pid + exec_user_command + keep_terminal_opened;

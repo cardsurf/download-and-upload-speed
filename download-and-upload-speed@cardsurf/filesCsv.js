@@ -44,7 +44,7 @@ BytesFileCsv.prototype = {
         this.csv_separator = ",";
         this.file = new Files.File(this.path);
     },
-    
+
     to_byte_rows: function(array_strings) {
         let rows = [];
         let row;

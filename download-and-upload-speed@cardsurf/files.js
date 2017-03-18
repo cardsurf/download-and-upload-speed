@@ -86,7 +86,7 @@ Directory.prototype = {
     _init: function(path) {
         this.separator = "/";
         this.path = path.endsWith(this.separator) ? path : path + this.separator;
-        this.directory = Gio.file_new_for_path(this.path); 
+        this.directory = Gio.file_new_for_path(this.path);
     },
 
     exists: function() {

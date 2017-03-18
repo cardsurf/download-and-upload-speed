@@ -34,7 +34,7 @@ CssStyle.prototype = {
     _remove_whitespaces: function(string) {
         return string.replace(/\s/g, '');
     },
-    
+
     set_value: function(attribute_name, attribute_value) {
         if(attribute_value !== undefined) {
            this.attributes[attribute_name] = attribute_value;
