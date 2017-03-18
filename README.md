@@ -1,4 +1,4 @@
-#Download and upload speed
+# Download and upload speed
 An applet that shows usage of a network interface for Linux Mint Cinnamon
 
 ![Alt text](../master/screenshots/compact.png "Download and upload speed")
@@ -18,14 +18,14 @@ An applet that shows usage of a network interface for Linux Mint Cinnamon
   * Enable or disable a hover popup
   * Customize a command used to list current Internet connections
 
-##Download
+## Download
 [Download zip archive](https://cinnamon-spices.linuxmint.com/uploads/applets/EHR7-KIIF-4XTR.zip)
 
-##Installation
+## Installation
 1. Extract .zip archive to ~/.local/share/cinnamon/applets
 2. Enable the applet in Cinnammon settings
 
-##Usage
+## Usage
 To specify a network interface:  
   
 1. Right click on the applet
