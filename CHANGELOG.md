@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.3.1
+Fixed an issue that prevented to set custom icons in Cinnamon 3.2  
+Fixed a bug that caused a hover popup to be displayed after Cinnamon restart regardless of configuration settings
+
 ### Version 1.3.0
 Added an option to display total amount of data downloaded and uploaded from the custom date  
 Added an option to display average speed per second or amount of data transferred  
