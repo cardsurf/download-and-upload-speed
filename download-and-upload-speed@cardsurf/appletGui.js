@@ -116,11 +116,17 @@ GuiSpeed.prototype = {
 	},
 
     _load_icon_file: function(icon_path) {
+		icon_path = this._remove_file_schema(icon_path);
 		icon_path = this._replace_tilde_with_home_directory(icon_path)
         let icon_file = Gio.file_new_for_path(icon_path);
         let icon_file = new Gio.FileIcon({ file: icon_file });
 		return icon_file;
     },
+
+	_remove_file_schema: function (path) {
+		path = path.replace("file://", "");
+		return path;
+	},
 
 	_replace_tilde_with_home_directory: function (path) {
 		let home_directory = GLib.get_home_dir();
