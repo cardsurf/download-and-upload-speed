@@ -25,10 +25,10 @@ function MyApplet(metadata, orientation, panel_height, instance_id) {
 };
 
 MyApplet.prototype = {
-	__proto__: Applet.TextApplet.prototype,
+	__proto__: Applet.Applet.prototype,
 
     _init: function(metadata, orientation, panel_height, instance_id) {
-        Applet.TextApplet.prototype._init.call(this, orientation);
+        Applet.Applet.prototype._init.call(this, orientation, panel_height, instance_id);
 
 		this.panel_height = panel_height;
 		this.orientation = orientation;
