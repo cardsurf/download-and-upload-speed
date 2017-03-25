@@ -34,6 +34,7 @@ MyApplet.prototype = {
         this.orientation = orientation;
         this.applet_directory = this._get_applet_directory();
         this.bytes_directory = this.applet_directory + "/bytes/";
+        this.is_running = true;
 
         this.bytes_received_previous = 0;
         this.bytes_received_iteration = 0;
@@ -120,29 +121,29 @@ MyApplet.prototype = {
 
     _bind_settings: function () {
         for(let [binding, property_name, callback] of [
-        				[Settings.BindingDirection.IN, "display_mode", null],
-        				[Settings.BindingDirection.IN, "unit_type", null],
-        				[Settings.BindingDirection.IN, "update_every", null],
-        				[Settings.BindingDirection.IN, "launch_terminal", null],
-        				[Settings.BindingDirection.IN, "list_connections_command",
+                        [Settings.BindingDirection.IN, "display_mode", null],
+                        [Settings.BindingDirection.IN, "unit_type", null],
+                        [Settings.BindingDirection.IN, "update_every", null],
+                        [Settings.BindingDirection.IN, "launch_terminal", null],
+                        [Settings.BindingDirection.IN, "list_connections_command",
                                                         this.on_list_connections_command_changed],
-        				[Settings.BindingDirection.IN, "write_every", null],
-        				[Settings.BindingDirection.IN, "custom_start_date", this.on_custom_start_date_changed],
-        				[Settings.BindingDirection.IN, "data_limit_command", null],
-        				[Settings.BindingDirection.IN, "data_limit", this.on_data_limit_changed],
-        				[Settings.BindingDirection.IN, "data_limit_command_enabled", this.on_data_limit_changed],
-        				[Settings.BindingDirection.IN, "decimal_places", this.on_decimal_places_changed],
-        				[Settings.BindingDirection.IN, "show_hover", this.on_show_hover_changed],
-        				[Settings.BindingDirection.IN, "gui_data_limit_type", this.on_gui_data_limit_type_changed],
-        				[Settings.BindingDirection.IN, "gui_text_css", this.on_gui_css_changed],
-        				[Settings.BindingDirection.IN, "gui_received_icon_filename", this.on_gui_icon_changed],
-        				[Settings.BindingDirection.IN, "gui_sent_icon_filename", this.on_gui_icon_changed],
-        				[Settings.BindingDirection.IN, "hover_popup_text_css", this.on_hover_popup_css_changed],
-        				[Settings.BindingDirection.IN, "hover_popup_numbers_css", this.on_hover_popup_css_changed],
+                        [Settings.BindingDirection.IN, "write_every", null],
+                        [Settings.BindingDirection.IN, "custom_start_date", this.on_custom_start_date_changed],
+                        [Settings.BindingDirection.IN, "data_limit_command", null],
+                        [Settings.BindingDirection.IN, "data_limit", this.on_data_limit_changed],
+                        [Settings.BindingDirection.IN, "data_limit_command_enabled", this.on_data_limit_changed],
+                        [Settings.BindingDirection.IN, "decimal_places", this.on_decimal_places_changed],
+                        [Settings.BindingDirection.IN, "show_hover", this.on_show_hover_changed],
+                        [Settings.BindingDirection.IN, "gui_data_limit_type", this.on_gui_data_limit_type_changed],
+                        [Settings.BindingDirection.IN, "gui_text_css", this.on_gui_css_changed],
+                        [Settings.BindingDirection.IN, "gui_received_icon_filename", this.on_gui_icon_changed],
+                        [Settings.BindingDirection.IN, "gui_sent_icon_filename", this.on_gui_icon_changed],
+                        [Settings.BindingDirection.IN, "hover_popup_text_css", this.on_hover_popup_css_changed],
+                        [Settings.BindingDirection.IN, "hover_popup_numbers_css", this.on_hover_popup_css_changed],
                         [Settings.BindingDirection.BIDIRECTIONAL, "gui_speed_type", this.on_gui_speed_type_changed],
-        				[Settings.BindingDirection.BIDIRECTIONAL, "bytes_start_time", this.on_bytes_start_time_changed],
-        				[Settings.BindingDirection.BIDIRECTIONAL, "network_interface", null] ]){
-        	    this.settings.bindProperty(binding, property_name, property_name, callback, null);
+                        [Settings.BindingDirection.BIDIRECTIONAL, "bytes_start_time", this.on_bytes_start_time_changed],
+                        [Settings.BindingDirection.BIDIRECTIONAL, "network_interface", null] ]){
+                this.settings.bindProperty(binding, property_name, property_name, callback, null);
         }
     },
 
@@ -161,10 +162,10 @@ MyApplet.prototype = {
     on_bytes_start_time_changed: function () {
         this._update_menu_item_byte_start_times_option();
         if(this.bytes_start_time == AppletConstants.BytesStartTime.START_OF_CURRENT_SESSION) {
-        	this._set_bytes_total_to_user_session();
+            this._set_bytes_total_to_user_session();
         }
         else {
-        	this._read_bytes_total();
+            this._read_bytes_total();
         }
     },
 
@@ -227,10 +228,10 @@ MyApplet.prototype = {
 
     on_show_hover_changed: function () {
         if(this.show_hover) {
-        	this.hover_popup.enable();
+            this.hover_popup.enable();
         }
         else {
-        	this.hover_popup.disable();
+            this.hover_popup.disable();
         }
     },
 
@@ -253,18 +254,24 @@ MyApplet.prototype = {
         this._init_gui();
     },
 
+    // Override
     on_applet_clicked: function(event) {
         if(this.launch_terminal) {
-        	let is_running = this.list_connections_process.is_running();
-        	if(is_running){
-        		this.list_connections_process.kill();
-        	}
-        	else {
-        		this.list_connections_process.spawn_async();
-        	}
+            let is_running = this.list_connections_process.is_running();
+            if(is_running){
+                this.list_connections_process.kill();
+            }
+            else {
+                this.list_connections_process.spawn_async();
+            }
         }
 
         this.close_hover_popup();
+    },
+
+    // Override
+    on_applet_removed_from_panel: function() {
+        this.is_running = false;
     },
 
     _init_network_properties: function () {
@@ -289,7 +296,7 @@ MyApplet.prototype = {
         let network_interface = this.settings.getValue("network_interface");
         let is_valid = this.array_contains(this.network_interfaces, network_interface);
         if(!is_valid && this.network_interfaces.length > 0) {
-        	network_interface = this.network_interfaces[0];
+            network_interface = this.network_interfaces[0];
         }
         return network_interface;
     },
@@ -300,9 +307,9 @@ MyApplet.prototype = {
 
     _init_dictionaries: function () {
         for (let i = 0; i < this.network_interfaces.length; i++) {
-        	let network_interface = this.network_interfaces[i];
-        	this.dictionary_interface_bytes_received_user_session[network_interface] = 0;
-        	this.dictionary_interface_bytes_sent_user_session[network_interface] = 0;
+            let network_interface = this.network_interfaces[i];
+            this.dictionary_interface_bytes_received_user_session[network_interface] = 0;
+            this.dictionary_interface_bytes_sent_user_session[network_interface] = 0;
         }
     },
 
@@ -327,13 +334,13 @@ MyApplet.prototype = {
 
     on_menu_item_network_clicked: function (option_name, option_index) {
         if(this.network_interface != option_name) {
-        	this._update_bytes_user_session();
+            this._update_bytes_user_session();
             this.network_interface = option_name;
             this._write_bytes_total();
-        	this._init_filename_properties();
+            this._init_filename_properties();
             this._init_files();
-        	this._reset_bytes();
-        	this.on_bytes_start_time_changed();
+            this._reset_bytes();
+            this.on_bytes_start_time_changed();
         }
     },
 
@@ -373,12 +380,12 @@ MyApplet.prototype = {
 
     _update_bytes_user_session: function () {
         this.dictionary_interface_bytes_received_user_session[this.network_interface] =
-        	this.network_interface in this.dictionary_interface_bytes_received_user_session ?
+            this.network_interface in this.dictionary_interface_bytes_received_user_session ?
             this.dictionary_interface_bytes_received_user_session[this.network_interface] +
             this.bytes_received_interface_session : this.bytes_received_interface_session;
 
         this.dictionary_interface_bytes_sent_user_session[this.network_interface] =
-        	this.network_interface in this.dictionary_interface_bytes_sent_user_session ?
+            this.network_interface in this.dictionary_interface_bytes_sent_user_session ?
             this.dictionary_interface_bytes_sent_user_session[this.network_interface] +
             this.bytes_sent_interface_session : this.bytes_sent_interface_session;
     },
@@ -448,7 +455,7 @@ MyApplet.prototype = {
     on_menu_item_gui_clicked: function (option_name, option_index) {
         if(this.gui_speed_type != option_index) {
             this.gui_speed_type = option_index;
-        	this.on_gui_speed_type_changed();
+            this.on_gui_speed_type_changed();
         }
     },
 
@@ -496,17 +503,23 @@ MyApplet.prototype = {
 
 
     run: function () {
-        this._run_calculate_speed();
-        this._run_write_bytes();
+        this._run_calculate_speed_running();
+        this._run_write_bytes_running();
+    },
+
+    _run_calculate_speed_running: function () {
+        if(this.is_running) {
+            this._run_calculate_speed();
+        }
     },
 
     _run_calculate_speed: function () {
         if(this.update_every > 0) {
             this._calculate_speed();
-            Mainloop.timeout_add(this.update_every * 1000, Lang.bind(this, this._run_calculate_speed));
+            Mainloop.timeout_add(this.update_every * 1000, Lang.bind(this, this._run_calculate_speed_running));
         }
         else {
-            Mainloop.timeout_add(1000, Lang.bind(this, this._run_calculate_speed));
+            Mainloop.timeout_add(1000, Lang.bind(this, this._run_calculate_speed_running));
         }
     },
 
@@ -541,7 +554,7 @@ MyApplet.prototype = {
     read_file: function (file) {
         let file_content = "";
         try {
-        	file_content = file.read_chars();
+            file_content = file.read_chars();
         }
         catch(exception) {
         }
@@ -555,7 +568,7 @@ MyApplet.prototype = {
     calculate_bytes_difference: function (bytes, previous_bytes) {
         let difference = bytes - previous_bytes;
         if(difference < 0 || previous_bytes == 0) {
-        	difference = 0;
+            difference = 0;
         }
         return difference;
     },
@@ -563,7 +576,7 @@ MyApplet.prototype = {
     convert_to_readable_string: function (bytes) {
         let [number, unit] = this.convert_to_readable_unit(bytes);
         if(!this.is_base(unit)) {
-        	number = this.round_output_number(number);
+            number = this.round_output_number(number);
         }
 
         let output = number.toString() + unit;
@@ -572,28 +585,28 @@ MyApplet.prototype = {
 
     convert_to_readable_unit: function (bytes) {
         if(this.unit_type == AppletConstants.UnitType.BYTES) {
-        	let [number, unit] = this.convert_bytes_to_readable_unit(bytes);
-        	return [number, unit];
+            let [number, unit] = this.convert_bytes_to_readable_unit(bytes);
+            return [number, unit];
         }
         else {
-        	bits = this.convert_to_bits(bytes);
-        	let [number, unit] = this.convert_bits_to_readable_unit(bits);
-        	return [number, unit];
+            bits = this.convert_to_bits(bytes);
+            let [number, unit] = this.convert_bits_to_readable_unit(bits);
+            return [number, unit];
         }
     },
 
     convert_bytes_to_readable_unit: function (bytes) {
         if(bytes >= 1000000000000) {
-        	return [bytes/1000000000000, "TB"];
+            return [bytes/1000000000000, "TB"];
         }
         if(bytes >= 1000000000) {
-        	return [bytes/1000000000, "GB"];
+            return [bytes/1000000000, "GB"];
         }
         if(bytes >= 1000000) {
-        	return [bytes/1000000, "MB"];
+            return [bytes/1000000, "MB"];
         }
         if(bytes >= 1000) {
-        	return [bytes/1000, "kB"];
+            return [bytes/1000, "kB"];
         }
         return [bytes, "B"];
     },
@@ -604,16 +617,16 @@ MyApplet.prototype = {
 
     convert_bits_to_readable_unit: function (bits) {
         if(bits >= 1000000000000) {
-        	return [bits/1000000000000, "Tb"];
+            return [bits/1000000000000, "Tb"];
         }
         if(bits >= 1000000000) {
-        	return [bits/1000000000, "Gb"];
+            return [bits/1000000000, "Gb"];
         }
         if(bits >= 1000000) {
-        	return [bits/1000000, "Mb"];
+            return [bits/1000000, "Mb"];
         }
         if(bits >= 1000) {
-        	return [bits/1000, "kb"];
+            return [bits/1000, "kb"];
         }
         return [bits, "b"];
     },
@@ -624,16 +637,16 @@ MyApplet.prototype = {
 
     round_output_number: function (number) {
         let output_number = this.decimal_places == AppletConstants.DecimalPlaces.AUTO ?
-        					this.round_output_number_auto(number) : number.toFixed(this.decimal_places);
+                            this.round_output_number_auto(number) : number.toFixed(this.decimal_places);
         return output_number;
     },
 
     round_output_number_auto: function (number) {
         if(number > 100) {
-        	return number.toFixed(0);
+            return number.toFixed(0);
         }
         if(number > 10) {
-        	return number.toFixed(1);
+            return number.toFixed(1);
         }
         return number.toFixed(2);
     },
@@ -655,12 +668,12 @@ MyApplet.prototype = {
     update_bytes_last_write: function () {
         let date_now = new Dates.ConvertableDate();
         if(date_now.is_earlier(this.date_midnight)) {
-        	this.bytes_received_last_write_before_midnight += this.bytes_received_iteration;
-        	this.bytes_sent_last_write_before_midnight += this.bytes_sent_iteration;
+            this.bytes_received_last_write_before_midnight += this.bytes_received_iteration;
+            this.bytes_sent_last_write_before_midnight += this.bytes_sent_iteration;
         }
         else {
-        	this.bytes_received_last_write_after_midnight += this.bytes_received_iteration;
-        	this.bytes_sent_last_write_after_midnight += this.bytes_sent_iteration;
+            this.bytes_received_last_write_after_midnight += this.bytes_received_iteration;
+            this.bytes_sent_last_write_after_midnight += this.bytes_sent_iteration;
         }
     },
 
@@ -685,8 +698,8 @@ MyApplet.prototype = {
 
     invoke_data_limit_command_if_exceeded: function () {
         if(!this.data_limit_command_invoked && this.data_limit_command_enabled && this.data_limit_exceeded()) {
-        	this.invoke_data_limit_command();
-        	this.data_limit_command_invoked = true;
+            this.invoke_data_limit_command();
+            this.data_limit_command_invoked = true;
         }
     },
 
@@ -696,19 +709,25 @@ MyApplet.prototype = {
         terminal_process.spawn_async();
     },
 
+    _run_write_bytes_running: function () {
+        if(this.is_running) {
+            this._run_write_bytes();
+        }
+    },
+
     _run_write_bytes: function () {
         if(this.write_every > 0) {
-                this._write_bytes_total();
-            Mainloop.timeout_add(this.write_every * 1000, Lang.bind(this, this._run_write_bytes));
+            this._write_bytes_total();
+            Mainloop.timeout_add(this.write_every * 1000, Lang.bind(this, this._run_write_bytes_running));
         }
         else {
-            Mainloop.timeout_add(1000, Lang.bind(this, this._run_write_bytes));
+            Mainloop.timeout_add(1000, Lang.bind(this, this._run_write_bytes_running));
         }
     },
 
     _read_bytes_total: function() {
         try {
-        	this._read_bytes_total_file();
+            this._read_bytes_total_file();
             this.add_last_write_bytes_to_total();
         }
         catch (exception) {
@@ -723,18 +742,18 @@ MyApplet.prototype = {
         for (let i = 0; i < rows.length; ++i) {
            let row = rows[i];
            if(row.date >= date_from) {
-        		this.bytes_received_total += row.bytes_received;
-        		this.bytes_sent_total += row.bytes_sent;
+                this.bytes_received_total += row.bytes_received;
+                this.bytes_sent_total += row.bytes_sent;
            }
            else {
-        	   break;
+               break;
            }
         }
     },
 
     _get_bytes_start_date_int: function () {
         if(this.bytes_start_time == AppletConstants.BytesStartTime.CUSTOM_DATE) {
-        	return this._get_custom_start_date_int();
+            return this._get_custom_start_date_int();
         }
 
         let today = new Dates.ConvertableDate();
@@ -763,9 +782,9 @@ MyApplet.prototype = {
     _write_bytes_total: function() {
         try {
             if(this.write_every > 0) {
-        		this._write_bytes_total_file();
-        	 	this._reset_bytes_last_write();
-        	 	this._init_dates();
+                this._write_bytes_total_file();
+                 this._reset_bytes_last_write();
+                 this._init_dates();
             }
         }
         catch(exception) {
@@ -795,10 +814,10 @@ MyApplet.prototype = {
     _get_index: function(rows, convertable_date) {
         let date_int = convertable_date.to_year_month_day_int();
         for(let i = 0; i < rows.length; ++i) {
-        	let row = rows[i];
-        	if(row.date == date_int) {
-        		return i;
-        	}
+            let row = rows[i];
+            if(row.date == date_int) {
+                return i;
+            }
         }
         return -1;
     },
@@ -818,7 +837,7 @@ MyApplet.prototype = {
             let row = new FilesCsv.BytesRowCsv(date_int,
                                                this.bytes_received_last_write_before_midnight,
                                                this.bytes_sent_last_write_before_midnight);
-        	rows.unshift(row);
+            rows.unshift(row);
         }
         return rows;
     },
