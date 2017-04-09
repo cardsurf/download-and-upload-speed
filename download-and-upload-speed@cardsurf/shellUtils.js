@@ -29,11 +29,11 @@ ShellOutputProcess.prototype = {
 
     spawn_sync: function() {
         let [success, standard_output_content, standard_error_content] = GLib.spawn_sync(
-        	null,
-        	this.command_argv,
-        	null,
-        	this.flags,
-        	null);
+            null,
+            this.command_argv,
+            null,
+            this.flags,
+            null);
         this.success = success;
         this.standard_output_content = standard_output_content;
         this.standard_error_content = standard_error_content;
@@ -56,12 +56,12 @@ ShellOutputProcess.prototype = {
     spawn_async: function() {
         let [success, pid, standard_input_file_descriptor,
              standard_output_file_descriptor, standard_error_file_descriptor] = GLib.spawn_async_with_pipes(
-        	 null,
-        	 this.command_argv,
-        	 null,
-        	 this.flags,
              null,
-        	 null);
+             this.command_argv,
+             null,
+             this.flags,
+             null,
+             null);
 
         this.success = success;
         this.pid = pid;
@@ -112,7 +112,7 @@ TerminalProcess.prototype = {
         let last_char = command.slice(-1);
         let semicolon = ";";
         if(last_char != semicolon) {
-        	command = command + semicolon;
+            command = command + semicolon;
         }
         return command;
     },
@@ -120,10 +120,10 @@ TerminalProcess.prototype = {
     spawn_async: function() {
         this.spawn_async_calls++;
         if(this.spawn_async_calls == 1 && !this.spawned_async) {
-        	this.tmp_filepath = this.generate_tmp_filename();
-        	let command_argv = this.get_command_argv();
+            this.tmp_filepath = this.generate_tmp_filename();
+            let command_argv = this.get_command_argv();
             [this.success]  = GLib.spawn_async(null, command_argv, null, this.flags, null, null);
-        	this.spawned_async = true;
+            this.spawned_async = true;
         }
         this.spawn_async_calls--;
     },
@@ -138,7 +138,7 @@ TerminalProcess.prototype = {
     get_command_argv: function() {
         let argv = ['gnome-terminal']
         if(this.maximized) {
-        	argv.push('--maximize');
+            argv.push('--maximize');
         }
         argv.push('-e');
 
@@ -157,7 +157,7 @@ TerminalProcess.prototype = {
 
     is_running: function() {
         if(this.spawned_async && this.pid == this.default_pid) {
-        	this.read_pid_and_delete_tmp_file_on_success();
+            this.read_pid_and_delete_tmp_file_on_success();
         }
         return this.pid != this.default_pid;
     },
@@ -166,7 +166,7 @@ TerminalProcess.prototype = {
         this.pid = this.read_pid();
 
         if(this.pid != this.default_pid) {
-        	this.delete_tmp_file();
+            this.delete_tmp_file();
         }
     },
 
@@ -174,7 +174,7 @@ TerminalProcess.prototype = {
         let process = new ShellOutputProcess(['cat', this.tmp_filepath]);
         let output = process.spawn_sync_and_get_output();
         if(output.length > 0) {
-        	return Number(output);
+            return Number(output);
         }
         return this.default_pid;
     },
@@ -186,10 +186,10 @@ TerminalProcess.prototype = {
 
     kill: function() {
         if(this.is_running()) {
-        	let process = new ShellOutputProcess(['kill', '-9', this.pid.toString()]);
-        	let output = process.spawn_sync_and_get_error();
-        	this.pid = this.default_pid;
-        	this.spawned_async = false;
+            let process = new ShellOutputProcess(['kill', '-9', this.pid.toString()]);
+            let output = process.spawn_sync_and_get_error();
+            this.pid = this.default_pid;
+            this.spawned_async = false;
         }
     },
 

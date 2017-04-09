@@ -5,6 +5,7 @@ const Mainloop = imports.mainloop;
 const St = imports.gi.St;
 const Settings = imports.ui.settings;
 const GLib = imports.gi.GLib;
+const Gettext = imports.gettext;
 
 const uuid = 'download-and-upload-speed@cardsurf';
 const AppletDirectory = imports.ui.appletManager.applets[uuid];
@@ -14,7 +15,11 @@ const ShellUtils = AppletDirectory.shellUtils;
 const Files = AppletDirectory.files;
 const FilesCsv = AppletDirectory.filesCsv;
 const Dates = AppletDirectory.dates;
+const Translation = AppletDirectory.translation;
 
+function _(str) {
+    return Gettext.dgettext(uuid, str);
+}
 
 
 
@@ -94,6 +99,7 @@ MyApplet.prototype = {
         this.menu_item_byte_start_times = null;
         this.hover_popup = null;
 
+        this._init_translations();
         this._bind_settings();
         this._connect_signals();
         this._init_network_properties();
@@ -117,6 +123,17 @@ MyApplet.prototype = {
     _get_applet_directory: function() {
         let directory = GLib.get_home_dir() + "/.local/share/cinnamon/applets/" + uuid + "/";
         return directory;
+    },
+
+    _init_translations: function() {
+        try {
+            let translator = new Translation.Translator();
+            translator.bind_domain();
+            translator.generate_files();
+        }
+        catch(exception) {
+            global.log(uuid + " error while initializing translations: " + exception);
+        }
     },
 
     _bind_settings: function () {
@@ -325,7 +342,7 @@ MyApplet.prototype = {
     },
 
     _init_menu_item_network: function () {
-        this.menu_item_network = new AppletGui.RadioMenuItem("Network interface", this.network_interfaces);
+        this.menu_item_network = new AppletGui.RadioMenuItem(_("Network interface"), this.network_interfaces);
         index = this.network_interfaces.indexOf(this.network_interface);
         this.menu_item_network.set_active_option(index);
         this.menu_item_network.set_callback_option_clicked(this, this.on_menu_item_network_clicked);
@@ -346,23 +363,23 @@ MyApplet.prototype = {
 
     _init_menu_item_byte_start_times: function () {
         let start_times = this._get_byte_start_time_options();
-        this.menu_item_byte_start_times = new AppletGui.RadioMenuItem("Total data start", start_times);
+        this.menu_item_byte_start_times = new AppletGui.RadioMenuItem(_("Total data start"), start_times);
         this._update_menu_item_byte_start_times_option();
         this.menu_item_byte_start_times.set_callback_option_clicked(this, this.on_menu_item_byte_start_times_clicked);
         this._applet_context_menu.addMenuItem(this.menu_item_byte_start_times);
     },
 
     _get_byte_start_time_options: function () {
-         return [ "Launch of applet",
-                  "Today",
-                  "Yesterday",
-                  "3 days ago",
-                  "5 days ago",
-                  "7 days ago",
-                  "10 days ago",
-                  "14 days ago",
-                  "30 days ago",
-                  "Custom date" ];
+         return [ _("Launch of applet"),
+                  _("Today"),
+                  _("Yesterday"),
+                  _("3 days ago"),
+                  _("5 days ago"),
+                  _("7 days ago"),
+                  _("10 days ago"),
+                  _("14 days ago"),
+                  _("30 days ago"),
+                  _("Custom date") ];
     },
 
     _update_menu_item_byte_start_times_option: function () {
@@ -445,7 +462,7 @@ MyApplet.prototype = {
     },
 
     _init_menu_item_gui: function () {
-        this.menu_item_gui = new AppletGui.RadioMenuItem("Gui", ["Compact", "Large"]);
+        this.menu_item_gui = new AppletGui.RadioMenuItem(_("Gui"), [_("Compact"), _("Large")]);
         this.menu_item_gui.set_active_option(this.gui_speed_type);
         this.menu_item_gui.set_callback_option_clicked(this, this.on_menu_item_gui_clicked);
         this._applet_context_menu.addMenuItem(this.menu_item_gui);
@@ -597,18 +614,18 @@ MyApplet.prototype = {
 
     convert_bytes_to_readable_unit: function (bytes) {
         if(bytes >= 1000000000000) {
-            return [bytes/1000000000000, "TB"];
+            return [bytes/1000000000000, _("TB")];
         }
         if(bytes >= 1000000000) {
-            return [bytes/1000000000, "GB"];
+            return [bytes/1000000000, _("GB")];
         }
         if(bytes >= 1000000) {
-            return [bytes/1000000, "MB"];
+            return [bytes/1000000, _("MB")];
         }
         if(bytes >= 1000) {
-            return [bytes/1000, "kB"];
+            return [bytes/1000, _("kB")];
         }
-        return [bytes, "B"];
+        return [bytes, _("B")];
     },
 
     convert_to_bits: function (bytes) {
@@ -617,22 +634,22 @@ MyApplet.prototype = {
 
     convert_bits_to_readable_unit: function (bits) {
         if(bits >= 1000000000000) {
-            return [bits/1000000000000, "Tb"];
+            return [bits/1000000000000, _("Tb")];
         }
         if(bits >= 1000000000) {
-            return [bits/1000000000, "Gb"];
+            return [bits/1000000000, _("Gb")];
         }
         if(bits >= 1000000) {
-            return [bits/1000000, "Mb"];
+            return [bits/1000000, _("Mb")];
         }
         if(bits >= 1000) {
-            return [bits/1000, "kb"];
+            return [bits/1000, _("kb")];
         }
-        return [bits, "b"];
+        return [bits, _("b")];
     },
 
     is_base: function (unit) {
-        return unit == "B" || unit == "b";
+        return unit == _("B") || unit == _("b");
     },
 
     round_output_number: function (number) {
@@ -768,7 +785,7 @@ MyApplet.prototype = {
         if(!isNaN(date_int)){
             return date_int;
         }
-        throw("Failed to parse custom start date to integer");
+        throw(_("Failed to parse custom start date to integer"));
     },
 
     add_last_write_bytes_to_total: function () {

@@ -49,7 +49,7 @@ BytesFileCsv.prototype = {
         let rows = [];
         let row;
         for (let i = 0; i < array_strings.length; ++i) {
-        	row = this.to_byte_row(array_strings[i]);
+            row = this.to_byte_row(array_strings[i]);
             rows.push(row);
         }
         return rows;
@@ -68,7 +68,7 @@ BytesFileCsv.prototype = {
         let strings = [];
         let string;
         for (let i = 0; i < array_byte_rows.length; ++i) {
-        	string = this.to_csv_string(array_byte_rows[i]);
+            string = this.to_csv_string(array_byte_rows[i]);
             strings.push(string);
         }
         return strings;

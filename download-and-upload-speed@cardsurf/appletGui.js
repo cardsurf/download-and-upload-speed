@@ -6,14 +6,21 @@ const Mainloop = imports.mainloop;
 const Lang = imports.lang;
 const PopupMenu = imports.ui.popupMenu;
 const Applet = imports.ui.applet;
+const Cairo = imports.cairo;
+const Gettext = imports.gettext;
 
 const uuid = 'download-and-upload-speed@cardsurf';
 const AppletDirectory = imports.ui.appletManager.applets[uuid];
 const AppletConstants = AppletDirectory.appletConstants;
 const CssStylization = AppletDirectory.cssStylization;
 
+function _(str) {
+    return Gettext.dgettext(uuid, str);
+}
 
-const Cairo = imports.cairo;
+
+
+
 
 function IconLabel() {
     this._init();
@@ -55,12 +62,12 @@ IconLabel.prototype = {
 
     set_label_fixed_width: function(fixed_width_text) {
         Mainloop.timeout_add(1, Lang.bind(this, function() {
-        	let text = this.label.get_text();
-        	this.set_label_to_preferred_width();
-        	this.set_label_text(fixed_width_text);
-        	let fixed_width = this.label.get_width();
-        	this.set_label_width(fixed_width);
-        	this.set_label_text(text);
+            let text = this.label.get_text();
+            this.set_label_to_preferred_width();
+            this.set_label_text(fixed_width_text);
+            let fixed_width = this.label.get_width();
+            this.set_label_width(fixed_width);
+            this.set_label_text(text);
             return false;
         }));
     },
@@ -96,7 +103,7 @@ GuiSpeed.prototype = {
 
     _init_actor: function() {
         if(this.gui_speed_type == AppletConstants.GuiSpeedType.COMPACT) {
-        	this.actor.set_vertical(true);
+            this.actor.set_vertical(true);
         }
         this.actor.add(this.iconlabel_received.actor);
         this.actor.add(this.iconlabel_sent.actor);
@@ -137,7 +144,7 @@ GuiSpeed.prototype = {
     set_text_style: function(css_style) {
         css_style = this.add_font_size(css_style);
         for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
-        	iconlabel.set_label_style(css_style);
+            iconlabel.set_label_style(css_style);
         }
 
         this._resize_gui_elements_to_match_text(css_style);
@@ -146,7 +153,7 @@ GuiSpeed.prototype = {
     add_font_size: function(css_style) {
         let font_size = this.css_styler.get_numeric_value_or_null(css_style, "font-size");
         if(font_size == null) {
-        	css_style = this._calculate_font_size_and_add(css_style);
+            css_style = this._calculate_font_size_and_add(css_style);
         }
         return css_style;
     },
@@ -160,7 +167,7 @@ GuiSpeed.prototype = {
 
     _calculate_font_size: function() {
         return this.gui_speed_type == AppletConstants.GuiSpeedType.COMPACT ?
-        	   (this.panel_height * 0.5) - 5 : (this.panel_height * 0.6) - 5;
+               (this.panel_height * 0.5) - 5 : (this.panel_height * 0.6) - 5;
     },
 
     _resize_gui_elements_to_match_text: function(css_style) {
@@ -171,34 +178,34 @@ GuiSpeed.prototype = {
     _set_icons_height_to_font_size: function(css_style) {
         let font_size = this.css_styler.get_numeric_value_or_null(css_style, "font-size");
         for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
-        	iconlabel.set_icon_size(font_size);
+            iconlabel.set_icon_size(font_size);
         }
     },
 
     _set_labels_width_fixed_or_styled: function(css_style) {
         let width = this.css_styler.get_numeric_value_or_null(css_style, "width");
         if(width == null) {
-        	this._set_labels_fixed_width();
+            this._set_labels_fixed_width();
         }
         else {
-        	this._set_labels_styled_width(width);
+            this._set_labels_styled_width(width);
         }
     },
 
     _set_labels_fixed_width: function() {
         let fixed_width_text = this._get_fixed_width_text();
         for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
-        	iconlabel.set_label_fixed_width(fixed_width_text);
+            iconlabel.set_label_fixed_width(fixed_width_text);
         }
     },
 
     _get_fixed_width_text: function() {
         let text = "";
         if(this.decimal_places == AppletConstants.DecimalPlaces.AUTO) {
-        	text = "99.9MB";
+            text = "99.9MB";
         }
         else {
-        	text = "999." + this.repeat_string("9", this.decimal_places) + "MB";
+            text = "999." + this.repeat_string("9", this.decimal_places) + "MB";
         }
         return text;
     },
@@ -211,7 +218,7 @@ GuiSpeed.prototype = {
 
     _set_labels_styled_width: function(width) {
         for(let iconlabel of [this.iconlabel_received, this.iconlabel_sent]){
-        	iconlabel.set_label_width(width);
+            iconlabel.set_label_width(width);
         }
     },
 
@@ -256,10 +263,10 @@ RadioMenuItem.prototype = {
 
     _init_options: function(option_names) {
         for(let option_name of option_names) {
-        	 let option = new PopupMenu.PopupMenuItem(option_name, false);
-        	 option.connect('activate', Lang.bind(this, this._on_option_clicked));
-        	 this.menu.addMenuItem(option);
-        	 this.options.push(option);
+             let option = new PopupMenu.PopupMenuItem(option_name, false);
+             option.connect('activate', Lang.bind(this, this._on_option_clicked));
+             this.menu.addMenuItem(option);
+             this.options.push(option);
         }
     },
 
@@ -271,11 +278,11 @@ RadioMenuItem.prototype = {
 
     set_active_option: function(index) {
         if(this.active_option_index != index) {
-        	if(this.active_option_index != -1) {
-        		this.set_font_weight(this.active_option_index, "normal");
-        	}
-        	this.set_font_weight(index, "bold");
-        	this.active_option_index = index;
+            if(this.active_option_index != -1) {
+                this.set_font_weight(this.active_option_index, "normal");
+            }
+            this.set_font_weight(index, "bold");
+            this.active_option_index = index;
         }
     },
 
@@ -291,9 +298,9 @@ RadioMenuItem.prototype = {
 
     _invoke_callback_option_clicked: function() {
         if(this.callback_option_clicked != null) {
-        	let option = this.get_active_option();
-        	let option_name = this.get_option_name(option);
-        	this.callback_option_clicked.call(this.callback_object, option_name, this.active_option_index);
+            let option = this.get_active_option();
+            let option_name = this.get_option_name(option);
+            this.callback_option_clicked.call(this.callback_object, option_name, this.active_option_index);
         }
     },
 
@@ -352,8 +359,8 @@ HoverMenuTotalBytes.prototype={
     },
 
     _init_labels: function(){
-        this.label_text_received.set_text("Total download:");
-        this.label_text_sent.set_text("Total upload:");
+        this.label_text_received.set_text(_("Total download:"));
+        this.label_text_sent.set_text(_("Total upload:"));
     },
 
     set_text_style: function(css_style) {
@@ -367,7 +374,7 @@ HoverMenuTotalBytes.prototype={
     _set_widgets_style: function(css_style, widgets){
         css_style = this._append_semicolon(css_style);
         for(let widget of widgets){
-        	widget.set_style(css_style);
+            widget.set_style(css_style);
         }
     },
 
@@ -376,7 +383,7 @@ HoverMenuTotalBytes.prototype={
         last_char = css_style.slice(-1);
         semicolon = ';';
         if (last_char != semicolon) {
-        	css_style += semicolon;
+            css_style += semicolon;
         }
         return css_style;
     },
@@ -408,15 +415,15 @@ HoverMenuTotalBytes.prototype={
 
     _connect_hover_signals: function(){
         if(!this._hover_handlers_connected()) {
-        	let applet_actor = this.applet.actor;
-        	this.enter_handler_id = applet_actor.connect("enter-event", Lang.bind(this, this._on_hover_enter));
-        	this.leave_handler_id = applet_actor.connect("leave-event", Lang.bind(this, this._on_hover_leave));
+            let applet_actor = this.applet.actor;
+            this.enter_handler_id = applet_actor.connect("enter-event", Lang.bind(this, this._on_hover_enter));
+            this.leave_handler_id = applet_actor.connect("leave-event", Lang.bind(this, this._on_hover_leave));
         }
     },
 
     _hover_handlers_connected: function(){
         return this.enter_handler_id != this.default_handler_id &&
-        	   this.leave_handler_id != this.default_handler_id;
+               this.leave_handler_id != this.default_handler_id;
     },
 
     _disconnect_hover_signals: function(){
@@ -481,7 +488,7 @@ GuiDataLimit.prototype = {
 
     set_percentage: function(percentage) {
         if(this.gui_data_limit_type != AppletConstants.GuiDataLimitType.NONE) {
-        	this.percentage_actor.set_percentage(percentage);
+            this.percentage_actor.set_percentage(percentage);
         }
     },
 
@@ -493,15 +500,15 @@ GuiDataLimit.prototype = {
     _set_percentage_actor: function() {
         this.actor.destroy_all_children();
         switch (this.gui_data_limit_type) {
-        	case AppletConstants.GuiDataLimitType.NONE:
-        		this._set_percentage_actor_none();
-        		break;
-        	case AppletConstants.GuiDataLimitType.CIRCLE:
-        		this._set_percentage_actor_circle();
-        		break;
-        	case AppletConstants.GuiDataLimitType.TEXT:
-        		this._set_percentage_actor_text();
-        		break;
+            case AppletConstants.GuiDataLimitType.NONE:
+                this._set_percentage_actor_none();
+                break;
+            case AppletConstants.GuiDataLimitType.CIRCLE:
+                this._set_percentage_actor_circle();
+                break;
+            case AppletConstants.GuiDataLimitType.TEXT:
+                this._set_percentage_actor_text();
+                break;
         }
     },
 
@@ -590,7 +597,7 @@ PercentageCircle.prototype = {
         let gradient_stop = (100 - this.percentage)/100;
         let gradient_stop_circle_not_red = 0.2;
         if(this.percentage < 100 && gradient_stop < gradient_stop_circle_not_red) {
-        	gradient_stop = gradient_stop_circle_not_red;
+            gradient_stop = gradient_stop_circle_not_red;
         }
         return gradient_stop;
     },

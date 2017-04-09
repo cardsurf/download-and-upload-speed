@@ -1,7 +1,11 @@
 
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const Gettext = imports.gettext;
 
+function _(str) {
+    return Gettext.dgettext(uuid, str);
+}
 
 
 
@@ -33,7 +37,7 @@ File.prototype = {
     read_chars: function() {
         let [success, array_chars] = GLib.file_get_contents(this.path);
         if(!success) {
-             throw ("Unable to read file content. Path to the file: " + this.path);
+             throw (_("Unable to read file content. Path to the file: ") + this.path);
         }
         return array_chars;
     },
@@ -48,7 +52,7 @@ File.prototype = {
             return true;
         }
         if(!this.is_top_level()) {
-        	let directory = this.get_parent_directory();
+            let directory = this.get_parent_directory();
             directory.create();
         }
         return this._create();
@@ -103,13 +107,13 @@ Directory.prototype = {
 
     create_parent_directories: function() {
         if(this.is_top_level()) {
-        	return;
+            return;
         }
         let directories_stack = [];
         let parent = this.get_parent_directory();
         while(!parent.exists()) {
             directories_stack.push(parent);
-        	parent = parent.get_parent_directory();
+            parent = parent.get_parent_directory();
         }
         for(let i = 0; i < directories_stack.length; ++i) {
             directories_stack[i].create();
