@@ -1,6 +1,8 @@
 # Changelog
 
-### Version 1.3.1
+### Version 1.4.0
+Added translation support (thanks [eson57](https://github.com/eson57))  
+Added Swedish translation (thanks [eson57](https://github.com/eson57))  
 Fixed an issue that prevented to set custom icons in Cinnamon 3.2  
 Fixed a bug that caused a hover popup to be displayed after Cinnamon restart regardless of configuration settings
 
