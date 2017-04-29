@@ -1,8 +1,10 @@
 # Changelog
 
 ### Version 1.4.0
-Added translation support (thanks [eson57](https://github.com/eson57))  
+Added translation support (thanks [eson57](https://github.com/eson57), [giwhub](https://github.com/giwhub))  
 Added Swedish translation (thanks [eson57](https://github.com/eson57))  
+Added Chinese translation (thanks [giwhub](https://github.com/giwhub))  
+Added Croatian translation (thanks [muzena](https://github.com/muzena))  
 Fixed an issue that prevented to set custom icons in Cinnamon 3.2  
 Fixed a bug that caused a hover popup to be displayed after Cinnamon restart regardless of configuration settings
 
