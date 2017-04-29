@@ -37,7 +37,7 @@ File.prototype = {
     read_chars: function() {
         let [success, array_chars] = GLib.file_get_contents(this.path);
         if(!success) {
-             throw (_("Unable to read file content. Path to the file: ") + this.path);
+             throw ("Unable to read file content. Path to the file: " + this.path);
         }
         return array_chars;
     },

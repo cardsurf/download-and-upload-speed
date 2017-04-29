@@ -5,7 +5,7 @@ po_directory="$HOME/.local/share/cinnamon/applets/$uuid/po"
 mo_directory="$HOME/.local/share/locale"
 local_messages_folder="LC_MESSAGES"
 output_filename="$uuid.mo"
-modification_time_seconds=10
+modification_threshold_seconds=0
 
 function generate_translation_file {
     input_filepath=$1
@@ -25,10 +25,10 @@ for filepath in "$po_directory"/*.po; do
     fi
 
     if [ -f $output_filepath ]; then
-        input_modifcation_time=$(date +%s -r $filepath)
-        output_modifcation_time=$(date +%s -r $output_filepath)
-        difference_seconds=$(( $input_modifcation_time - $output_modifcation_time ))
-        if (( $difference_seconds > $modification_time_seconds )); then
+        input_modification_time=$(date +%s -r $filepath)
+        output_modification_time=$(date +%s -r $output_filepath)
+        difference_seconds=$(( $input_modification_time - $output_modification_time ))
+        if (( $difference_seconds > $modification_threshold_seconds )); then
             generate_translation_file $filepath $output_filepath
         fi
     else

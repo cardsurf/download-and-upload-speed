@@ -1,215 +1,216 @@
-# Swedish localisation for download-and-upload-speed@cardsurf.
+# Creoatian localisation for download-and-upload-speed@cardsurf.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Åke Engelbrektson <eson@svenskasprakfiler.se>, 2017.
+# gogo <trebelnik2@gmail.com>, 2017.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: download-and-upload-speed@cardsurf\n"
+"Project-Id-Version: download-and-upload-speed@cardsurf 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-08 11:57+0200\n"
-"PO-Revision-Date: 2017-04-08 12:07+0200\n"
-"Last-Translator: Åke Engelbrektson <eson@svenskasprakfiler.se>\n"
-"Language-Team: Svenska Språkfiler <contactform@svenskasprakfiler.se>\n"
-"Language: sv\n"
+"POT-Creation-Date: 2017-04-16 23:18+0200\n"
+"PO-Revision-Date: 2017-04-17 00:25+0200\n"
+"Language-Team: Croatian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: gogo <trebelnik2@gmail.com>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: hr\n"
 
 #: applet.js:345
 msgid "Network interface"
-msgstr "Nätverksgränssnitt"
+msgstr "Mrežno sučelje"
 
 #: applet.js:366
 msgid "Total data start"
-msgstr "Total datamängd börjar"
+msgstr "Pokreni s ukupno podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:373
 msgid "Launch of applet"
-msgstr "Programstart"
+msgstr "od pokretanja apleta"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:374
 msgid "Today"
-msgstr "I dag"
+msgstr "od danas"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:375
 msgid "Yesterday"
-msgstr "I går"
+msgstr "od jučer"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:376
 msgid "3 days ago"
-msgstr "3 dagar sedan"
+msgstr "od prije 3 dana"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:377
 msgid "5 days ago"
-msgstr "5 dagar sedan"
+msgstr "od prije 5 dana"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:378
 msgid "7 days ago"
-msgstr "7 dagar sedan"
+msgstr "od prije 7 dana"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:379
 msgid "10 days ago"
-msgstr "10 dagar sedan"
+msgstr "od prije 10 dana"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:380
 msgid "14 days ago"
-msgstr "14 dagar sedan"
+msgstr "od prije 14 dana"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:381
 msgid "30 days ago"
-msgstr "30 dagar sedan"
+msgstr "od prije 30 dana"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->options
 #: applet.js:382
 msgid "Custom date"
-msgstr "Anpassat datum"
+msgstr "Prilagođeni datum"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_start->description
 #: applet.js:465
 msgid "Gui"
-msgstr "GUI"
+msgstr "Grafičko sučelje"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_speed_type->options
 #: applet.js:465
 msgid "Compact"
-msgstr "Kompakt"
+msgstr "Kompaktno"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_speed_type->options
 #: applet.js:444
 msgid "Large"
-msgstr "Stor"
+msgstr "Veliko"
 
 #: appletGui.js:362
 msgid "Total download:"
-msgstr "Totalt nerladdat:"
+msgstr "Ukupno preuzeto:"
 
 #: appletGui.js:363
 msgid "Total upload:"
-msgstr "Totalt uppladdat:"
+msgstr "Ukupno poslano:"
 
 #. download-and-upload-speed@cardsurf->metadata.json->name
 msgid "Download and upload speed"
-msgstr "Ner- och uppladdningshastighet"
+msgstr "Brzina preuzimanja i slanja"
 
 #. download-and-upload-speed@cardsurf->metadata.json->description
 msgid "Shows usage of a network interface"
-msgstr "Visar användningen av ett nätverksgränssnitt"
+msgstr "Prikazuje korištenje mrežnih sučelja"
 
 #. download-and-upload-speed@cardsurf->settings-schema.json->head->description
 msgid "Settings for download-and-upload-speed@cardsurf"
-msgstr "Settings for download-and-upload-speed@cardsurf"
+msgstr "Postavke za download-and-upload-speed@cardsurf"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->configuration->description
 msgid "Configuration"
-msgstr "Konfiguration"
+msgstr "Podešavanje"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->display_mode->description
 msgid "Show"
-msgstr "Show"
+msgstr "Prikaži"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->display_mode->tooltip
 msgid "Values shown in the panel"
-msgstr "Värden visas i panelen"
+msgstr "Vrijednosti prikazane u panelu"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->display_mode->options
 msgid "Average speed per second"
-msgstr "Medelhastighet per sekund"
+msgstr "Prosječnu brzinu po sekundi"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->display_mode->options
 msgid "Amount of data transferred"
-msgstr "Mängden överförd data"
+msgstr "Količinu prenesenih podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->unit_type->description
 msgid "Unit"
-msgstr "Enhet"
+msgstr "Mjerna jedinica"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->unit_type->tooltip
 msgid "Base data unit shown in the panel"
-msgstr "Basdataenhet visad i panelen"
+msgstr "Mjerna jedinica prikazana u panelu"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->unit_type->options
 msgid "Bytes"
-msgstr "Byte"
+msgstr "Bajtovi"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->unit_type->options
 msgid "Bits"
-msgstr "Bit"
+msgstr "Bitovi"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->update_every->description
 msgid "Calculate every"
-msgstr "Beräkna varje"
+msgstr "Računaj svakih"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->update_every->tooltip
 msgid "How often to calculate download and upload speed"
-msgstr "Hur ofta ner- och uppladdningshastigheten skall beräknas"
+msgstr "Koliko često izračunati brzinu preuzimanja i slanja"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->update_every->units
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->write_every->units
 msgid "seconds"
-msgstr "seconds"
+msgstr "sekunde"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_speed_type->description
 msgid "Type"
-msgstr "Typ"
+msgstr "Vrsta prikaza"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_speed_type->tooltip
 msgid "Applet Gui"
-msgstr "Panelikonens utseende"
+msgstr "Grafičko sučelje apleta"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->decimal_places->description
 msgid "Decimal places"
-msgstr "Decimaler"
+msgstr "Decimalna mjesta"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->decimal_places->tooltip
 msgid "Decimal places of download and upload speed shown in the panel"
-msgstr "Antal decimaler i ner- och uppladdningshastigheten, i panelen"
+msgstr "Decimalna mjesta brzine preuzimanja i slanja prikazana u panelu"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->decimal_places->options
 msgid "Auto"
-msgstr "Auto"
+msgstr "Automatski"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->decimal_places->options
@@ -234,82 +235,84 @@ msgstr "3"
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_text_css->description
 msgid "Text CSS"
-msgstr "CSS-stil för paneltext"
+msgstr "CSS tekst"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_text_css->tooltip
 msgid "A CSS style applied to the text in the panel"
-msgstr "CSS-stil som tillämpas på text i panelen"
+msgstr "CSS izgled primijenjen na tekst u panelu"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_received_icon_filename->description
 msgid "Download icon"
-msgstr "Nerladdningsikon"
+msgstr "Ikona preuzimanja"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_received_icon_filename->tooltip
 msgid "An icon displayed next to download speed in the panel"
-msgstr "Ikon som visas intill nerladdningshastigheten i panelen"
+msgstr "Ikona prikazana pokraj brzine preuzimanja u panelu"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_sent_icon_filename->description
 msgid "Upload icon"
-msgstr "Uppladdningsikon"
+msgstr "Ikona slanja"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_sent_icon_filename->tooltip
 msgid "An icon displayed next to upload speed in the panel"
-msgstr "Ikon som visas intill uppladdningshastigheten i panelen"
+msgstr "Ikona prikazana pokraj brzine slanja u panelu"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->hover_popup_text_css->description
 msgid "Popup text CSS"
-msgstr "CSS-stil för popup-text"
+msgstr "CSS tekst skočnog prozora"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->hover_popup_text_css->tooltip
 msgid "A CSS style applied to the description text in the hover popup"
-msgstr "CSS-stil som tillämpas på texten i panelikonens hovrings-popup"
+msgstr "CSS izgled primijenjen na tekst u skočnom prozoru"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->hover_popup_numbers_css->description
 msgid "Popup numbers CSS"
-msgstr "CSS-stil för popup-siffror"
+msgstr "CSS brojevi skočnog prozora"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->hover_popup_numbers_css->tooltip
 msgid "A CSS style applied to numbers in the hover popup"
-msgstr "CSS-stil som tillämpas på siffror i panelikonens hovrings-popup"
+msgstr "CSS izgled primijenjen na brojeve u skočnom prozoru"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->total_data_start->description
 msgid "Total data"
-msgstr "Total datamängd"
+msgstr "Ukupno podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->show_hover->description
 msgid "Show total download and upload on hover"
-msgstr "Visa total mängd ner- och uppladdad data vid hovring"
+msgstr "Prikazuje ukupno preuzimanje i slanje pri lebdenju pokazivačem"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->show_hover->tooltip
 msgid "Show the hover popup with total amount of data downloaded and uploaded"
-msgstr "Visa hovrings-popup med total mängd ner- och uppladdad data"
+msgstr ""
+"Prikazuje skočni prozor sa ukupnom količinom preuzetih i poslanih podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->description
 msgid "Start"
-msgstr "Start"
+msgstr "Pokretanje"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->bytes_start_time->tooltip
 msgid "Start time to count total amount of data downloaded and uploaded"
-msgstr "Starttid för beräkning av total mängd ner- och uppladdad data"
+msgstr ""
+"Početno vrijeme za računanje ukupne količine preuzetih i poslanih podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->custom_start_date->description
 msgid "Custom date "
-msgstr "Anpassat datum"
+msgstr "Prilagođeni datum "
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->custom_start_date->tooltip
@@ -317,13 +320,14 @@ msgid ""
 "A custom date in YYYY-MM-DD format used as start time. The option is used if"
 " \"Custom date\" is selected in \"Start\" combobox."
 msgstr ""
-"Anpassat datum i formatet YYYY-MM-DD, används som startid. Detta alternativ "
-"tillämpas om \"Anpassat datum\" valts i kombinationslistan under \"Start\"."
+"Prilagođeni datum u YYYY-MM-DD formatu korišten kao vrijeme pokretanja. "
+"Mogućnost se koristi ako je \"Prilagođeni datum\" odabran u \"Pokreni\" "
+"okviru."
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->write_every->description
 msgid "Save every"
-msgstr "Spara varje"
+msgstr "Spremi svakih"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->write_every->tooltip
@@ -331,23 +335,24 @@ msgid ""
 "How often to save total amount of data downloaded and uploaded to the file. "
 "0 means no saving to the file."
 msgstr ""
-"Hur ofta totala mängden ner- och uppladdad data skall sparas i filen. 0 "
-"innebär att ingen data sparas i filen."
+"Koliko često spremiti ukupnu količinu preuzetih i poslanih podataka u "
+"datoteku. 0 znači da se ne sprema u datoteku."
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->data_limit_start->description
 msgid "Data limits"
-msgstr "Datagränser"
+msgstr "Ograničenje podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->data_limit->description
 msgid "Data limit"
-msgstr "Databegränsning"
+msgstr "Ograničenje podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->data_limit->tooltip
 msgid "The maximum amount of data to download and upload. 0 means no limits."
-msgstr "Maxgräns för ner- och uppladdad data. 0 betyder obegränsad datamängd."
+msgstr ""
+"Najveća količina podataka za preuzimanje i slanje. 0 znači bez ograničenja."
 
 #. download-and-upload-speed@cardsurf->settings-schema.json->data_limit->units
 msgid "MB"
@@ -356,32 +361,32 @@ msgstr "MB"
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_data_limit_type->description
 msgid "Show data limit usage"
-msgstr "Visa använd andel av datagräns"
+msgstr "Prikaži upotrebu ograničenja podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_data_limit_type->tooltip
 msgid "Show the percentage of data limit used in the panel"
-msgstr "Visa använd procentandel av angiven datagräns i panelen"
+msgstr "Prikaži postotak upotrebe ograničenje podataka u panelu"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_data_limit_type->options
 msgid "None"
-msgstr "Ingen"
+msgstr "Nepoznato"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_data_limit_type->options
 msgid "Circle"
-msgstr "Cirkel"
+msgstr "Krug"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->gui_data_limit_type->options
 msgid "Text"
-msgstr "Text"
+msgstr "Tekst"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->data_limit_command_enabled->description
 msgid "Invoke command when data limit exceeded"
-msgstr "Kör kommando när angiven datagräns uppnåtts"
+msgstr "Pozovi naredbu kada se dosegne ograničenje podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->data_limit_command_enabled->tooltip
@@ -389,27 +394,28 @@ msgid ""
 "Invoke a command when amount of data downloaded and uploaded exceeded the "
 "limit"
 msgstr ""
-"Anropa ett kommando när mängden ner- och uppladdad data uppnår angiven gräns"
+"Pozovi naredbu kada se dosegne ograničenje količine preuzetih i poslanih "
+"podataka"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->data_limit_command->description
 msgid "Command"
-msgstr "Kommando"
+msgstr "Naredba"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->data_limit_command->tooltip
 msgid "A command to invoke"
-msgstr "Kommando att anropa"
+msgstr "Naredba za pozivanje"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->connections_start->description
 msgid "Connections"
-msgstr "Anslutningar"
+msgstr "Povezivanja"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->launch_terminal->description
 msgid "List current Internet connections on left mouse click"
-msgstr "Lista aktuella internetanslutningar vid vänsterklick"
+msgstr "Prikaži trenutna internetska povezivanja pri lijevom kliku"
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->launch_terminal->tooltip
@@ -417,15 +423,15 @@ msgid ""
 "Open a terminal with a list of current connections on a left mouse click. "
 "The next click closes the terminal."
 msgstr ""
-"Öppna ett terminalfönster med en lista över aktuella anslutningar, vid "
-"vänsterklick på panelikonen. Nästa klick stänger terminal igen."
+"Otvara terminal s popisom trenutnih povezivanja pri lijevom kliku. Sljedeći "
+"klik zatvara terminal."
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->list_connections_command->description
 msgid "Command "
-msgstr "Kommando"
+msgstr "Naredba "
 
 #. download-and-upload-speed@cardsurf->settings-
 #. schema.json->list_connections_command->tooltip
 msgid "A command used to list current Internet connections"
-msgstr "Kommando som används för att lista nuvarande internetanslutningar"
+msgstr "Naredba korištena za prikaz trenutnih internetskih povezivanja"

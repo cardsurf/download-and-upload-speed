@@ -614,18 +614,18 @@ MyApplet.prototype = {
 
     convert_bytes_to_readable_unit: function (bytes) {
         if(bytes >= 1000000000000) {
-            return [bytes/1000000000000, _("TB")];
+            return [bytes/1000000000000, "TB"];
         }
         if(bytes >= 1000000000) {
-            return [bytes/1000000000, _("GB")];
+            return [bytes/1000000000, "GB"];
         }
         if(bytes >= 1000000) {
-            return [bytes/1000000, _("MB")];
+            return [bytes/1000000, "MB"];
         }
         if(bytes >= 1000) {
-            return [bytes/1000, _("kB")];
+            return [bytes/1000, "kB"];
         }
-        return [bytes, _("B")];
+        return [bytes, "B"];
     },
 
     convert_to_bits: function (bytes) {
@@ -634,22 +634,22 @@ MyApplet.prototype = {
 
     convert_bits_to_readable_unit: function (bits) {
         if(bits >= 1000000000000) {
-            return [bits/1000000000000, _("Tb")];
+            return [bits/1000000000000, "Tb"];
         }
         if(bits >= 1000000000) {
-            return [bits/1000000000, _("Gb")];
+            return [bits/1000000000, "Gb"];
         }
         if(bits >= 1000000) {
-            return [bits/1000000, _("Mb")];
+            return [bits/1000000, "Mb"];
         }
         if(bits >= 1000) {
-            return [bits/1000, _("kb")];
+            return [bits/1000, "kb"];
         }
         return [bits, _("b")];
     },
 
     is_base: function (unit) {
-        return unit == _("B") || unit == _("b");
+        return unit == "B" || unit == "b";
     },
 
     round_output_number: function (number) {
@@ -785,7 +785,7 @@ MyApplet.prototype = {
         if(!isNaN(date_int)){
             return date_int;
         }
-        throw(_("Failed to parse custom start date to integer"));
+        throw("Failed to parse custom start date to integer");
     },
 
     add_last_write_bytes_to_total: function () {
