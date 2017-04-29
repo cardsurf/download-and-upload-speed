@@ -31,3 +31,6 @@ To specify a network interface:
 1. Right click on the applet
 2. From "Network interface" submenu click on a network interface
 
+## Source code
+Browse the source of the applet in the [original repository](https://github.com/cardsurf/download-and-upload-speed).  
+Browse the source of the applet in the [Linux Mint Cinnamon applets repository](https://github.com/linuxmint/cinnamon-spices-applets/tree/master/download-and-upload-speed%40cardsurf).
