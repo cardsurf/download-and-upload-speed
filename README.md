@@ -23,7 +23,7 @@ An applet that shows usage of a network interface for Linux Mint Cinnamon
 
 ## Installation
 1. Extract .zip archive to ~/.local/share/cinnamon/applets
-2. Enable the applet in Cinnammon settings
+2. Enable the applet in Cinnamon settings
 
 ## Usage
 To specify a network interface:  
