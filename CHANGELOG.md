@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.4.1
+Added support for Cinnamon 3.4  
+  
 ### Version 1.4.0
 Added translation support (thanks [eson57](https://github.com/eson57), [giwhub](https://github.com/giwhub))  
 Added Swedish translation (thanks [eson57](https://github.com/eson57))  
