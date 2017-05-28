@@ -227,8 +227,16 @@ MyApplet.prototype = {
     },
 
     data_limit_exceeded: function () {
-        let data_limit_bytes = this.convert_data_limit_bytes();
-        return this.bytes_total > data_limit_bytes;
+        let enabled = this.is_data_limit_enabled();
+        if(enabled) {
+            let data_limit_bytes = this.convert_data_limit_bytes();
+            return this.bytes_total > data_limit_bytes;
+        }
+        return false;
+    },
+
+    is_data_limit_enabled: function () {
+        return this.data_limit > 0;
     },
 
     convert_data_limit_bytes: function () {
