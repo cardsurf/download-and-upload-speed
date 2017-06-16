@@ -1,8 +1,10 @@
 # Changelog
 
-### Version 1.4.1
+### Version 1.5.0
 Added support for Cinnamon 3.4  
-  
+Added an option to update a list of network interfaces  
+Fixed a bug of invoking a data limit exceeded command after applet start when data limit was not set
+
 ### Version 1.4.0
 Added translation support (thanks [eson57](https://github.com/eson57), [giwhub](https://github.com/giwhub))  
 Added Swedish translation (thanks [eson57](https://github.com/eson57))  
