@@ -2,8 +2,12 @@
 
 ### Version 1.5.0
 Added support for Cinnamon 3.4  
-Added an option to update a list of network interfaces  
-Fixed a bug of invoking a data limit exceeded command after applet start when data limit was not set
+A list of available network interfaces updates when a context menu opens  
+Added scripts that list current Internet connections  
+Fixed a bug of invoking a data limit exceeded command after applet start when data limit was not set  
+Fixed an applet size when user interface scaling was set to Hi-DPI  
+Added Danish translation (thanks [Alan01](https://github.com/Alan01))  
+Added Bulgarian translation (thanks [spacy01](https://github.com/spacy01))  
 
 ### Version 1.4.0
 Added translation support (thanks [eson57](https://github.com/eson57), [giwhub](https://github.com/giwhub))  
