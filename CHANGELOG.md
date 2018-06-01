@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 1.6.0
+Added support for Cinnamon 3.8  
+Added a feature to show a sum of download and upload speed values when multiple network interfaces are checked  
+Added Polish translation (thanks [xearonet](https://github.com/xearonet))  
+Added German translation (thanks [NikoKrause](https://github.com/NikoKrause))  
+
 ### Version 1.5.0
 Added support for Cinnamon 3.4  
 A list of available network interfaces updates when a context menu opens  
